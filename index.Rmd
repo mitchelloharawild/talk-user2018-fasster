@@ -162,16 +162,47 @@ class: inverse
 
 # Flexible model specification
 ```{r, echo = TRUE, eval = FALSE}
-t(y) ~ model
+log(y + 1) ~ poly(1) + seas(24) + trig(24*365.25, 10) + x + z^2
 ```
 
-## poly(n): Polynomials
+### poly(n): Polynomials
+### seas(s): Seasonal factors
+### trig(s, q): Seasonal fourier terms
+### ARMA(ar, ma): ARMA processes
+### xreg: Exogenous regressors
 
 ---
 
-# Usage (Electricity Demand)
+# %S%: State switching
+```{r, echo = TRUE, eval = FALSE}
+y ~ DayType %S% (poly(1) + trig(48, 14))
+```
 
-```{r elecfit, cache = TRUE}
+
+```{r switching, cache = TRUE}
+tsibbledata::elecdemand %>% 
+  filter(month(index) == 7) %>%
+  mutate(
+    `Working Day` = ifelse(WorkDay == 1, Demand, NA),
+    `Non-working Day` = ifelse(WorkDay == 0, Demand, NA)
+  ) %>%
+  gather("Day Type", "Demand", `Working Day`, `Non-working Day`) %>%
+  ggplot(aes(x=index, y = Demand, colour = `Day Type`)) +
+  geom_line() + 
+  xlab("Time [30 MINUTES]") + 
+  ylab("Electricity Demand (GW)") + 
+  theme(legend.position = "bottom")
+```
+
+
+---
+
+# Usage Example (Electricity Demand)
+
+```{r elecfit, echo = TRUE, eval = FALSE, cache = TRUE}
+{{library(tsibble)
+library(fasster)}}
+
 elec_tr <- tsibbledata::elecdemand %>%
   filter(index < ymd("2014-03-01"))
 
