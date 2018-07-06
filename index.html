@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>fasster: forecasting with state switching</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Mitchell O’Hara-Wild" />
+    <script src="libs/htmlwidgets/htmlwidgets.js"></script>
+    <link href="libs/vis/vis.min.css" rel="stylesheet" />
+    <script src="libs/vis/vis.min.js"></script>
+    <link href="libs/timeline/timevis.css" rel="stylesheet" />
+    <script src="libs/timevis-binding/timevis.js"></script>
+    <script src="libs/jquery/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="libs/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="libs/bootstrap/shim/html5shiv.min.js"></script>
+    <script src="libs/bootstrap/shim/respond.min.js"></script>
+    <link rel="stylesheet" href="libs/slides.css" type="text/css" />
+    <link rel="stylesheet" href="libs/animate.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: inverse 
+
+
+
+.title[fasster]
+.sticker-float[![fasster](resources/fasster.png)]
+
+## Forecasting multiple seasonality with state switching
+
+.bottom[
+### Mitchell O'Hara-Wild (&lt;svg style="height:0.8em;top:.04em;position:relative;fill:#1da1f2;" viewBox="0 0 512 512"&gt;&lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/&gt;&lt;/svg&gt;[@mitchoharawild](https://twitter.com/mitchoharawild))
+&lt;br&gt;
+### July 13th 2018
+
+### Slides @ [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
+]
+---
+
+.sticker-float[![fable](resources/fable.svg)]
+
+# Extending fable
+
+**fasster** objects are consistent with the **fable** package.
+
+Which provides:
+
+- Plotting of forecasts and components
+- Model extraction methods
+- Accuracy measures
+- Residual diagnostics
+
+---
+
+# Sub-daily difficulty
+![](index_files/figure-html/elecMonthly-1.png)&lt;!-- --&gt;
+
+---
+
+# Sub-daily difficulty
+![](index_files/figure-html/elecDaily-1.png)&lt;!-- --&gt;
+
+---
+
+# Sub-daily difficulty
+![](index_files/figure-html/elecPlot-1.png)&lt;!-- --&gt;
+---
+
+
+## Models for multiple seasonality
+<div id="htmlwidget-d7e97da393558de1b062" class="timevis html-widget" style="width:100%;height:250px;">
+<div class="btn-group zoom-menu">
+<button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
+<button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
+</div>
+</div>
+<script type="application/json" data-for="htmlwidget-d7e97da393558de1b062">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"2000","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"BATS/TBATS","start":"2010","group":"ss"},{"id":"4","content":"MLR","start":"2000","group":"reg"},{"id":"5","content":"GAM","start":"2000","group":"reg"},{"id":"6","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
+
+&lt;table class="table"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Model&lt;/th&gt;
+      &lt;th&gt;Flexible&lt;/th&gt;
+      &lt;th&gt;Speed&lt;/th&gt;
+      &lt;th&gt;Exogenous Regressors&lt;/th&gt;
+      &lt;th&gt;Accuracy&lt;/th&gt;
+      &lt;th&gt;Decompose Components&lt;/th&gt;
+      &lt;th&gt;Evolving Terms&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Regression&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="success"&gt;Fast&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+    &lt;tr&gt;
+      &lt;td&gt;State&amp;nbspSpace&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="danger"&gt;Slow&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+.center[(this table is a *massive* generalisation)]
+
+---
+class: inverse
+
+.sticker-float[![fasster](resources/fasster.png)]
+# What is fasster?
+
+### *Forecasting with Additive Switching of Seasonality, Trend &amp; Exogenous Regressors*
+
+&lt;br&gt; &lt;br&gt; 
+
+### A state space model with the speed and flexibility of regression models
+
+---
+
+# Flexible model specification
+
+```r
+t(y) ~ model
+```
+
+## t(y) ~ model
+
+---
+
+# Usage (Electricity Demand)
+
+
+```
+## FASSTER Model:
+##  log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + Temperature +  
+## 
+##  FASSTER Model:
+##      Temperature^2 
+## 
+## Estimated variances:
+##  State noise variances (W):
+##   Temperature
+##    4.4783e-19
+##   Temperature^2
+##    1.3235e-21
+##   WorkDay_0/poly(1)
+##    1.5024e-05
+##   WorkDay_0/trig(48, 16)
+##    5.4023e-20 9.1556e-20 3.1563e-20 1.5040e-20 5.9321e-20 1.1434e-20 4.7195e-20 4.4684e-20 6.2725e-20 6.7815e-20 2.7957e-20 5.7649e-20 3.7906e-20 4.6610e-20 3.6093e-20 1.9166e-20 1.8066e-20 1.5759e-20 1.2604e-20 1.2353e-20 1.1740e-20 1.5171e-20 4.1919e-21 6.2628e-21 5.6465e-21 1.7402e-20 1.8481e-21 8.6665e-21 1.9061e-20 1.3466e-20 8.9988e-21 1.5821e-20
+##   WorkDay_1/poly(1)
+##    2.4805e-05
+##   WorkDay_1/trig(48, 16)
+##    2.3815e-20 1.9794e-20 2.7061e-20 1.8364e-20 2.5340e-20 2.6380e-20 2.2770e-20 2.0017e-20 2.6746e-20 3.2013e-20 2.8736e-20 7.5419e-20 7.8991e-20 3.4856e-20 4.0438e-20 9.7090e-20 9.3744e-20 5.0359e-20 5.8476e-20 8.4130e-20 5.5919e-20 4.9278e-20 6.8488e-20 6.6973e-20 9.2413e-20 1.9480e-20 2.1598e-20 3.2756e-20 9.3308e-21 2.1707e-20 5.6945e-21 7.1177e-21
+## 
+##  Observation noise variance (V):
+##   9.5575e-05
+```
+
+
+---
+
+# Forecasts (Electricity demand)
+
+![](index_files/figure-html/elecfc-1.png)&lt;!-- --&gt;
+
+---
+
+# Example workflow
+
+The way **fasster** integrates with other package is clear in this example of forecasting half-hourly electricity demand (from Taylor, 2003).
+
+
+```r
+*library(fasster)
+*library(tidyverse)
+*library(lubridate)
+*library(forecast)
+
+tbl_taylor &lt;- as_tsibble(taylor) %&gt;%
+  mutate(index = seq(ymd_h("2000-6-5 00"), by="30 mins", length.out=length(taylor)),
+         DayType = ifelse(wday(index) %in% 2:6, "Weekday", "Weekend")) %&gt;% 
+  filter(month(index) == 8)
+tbl_taylor %&gt;%
+  filter(index &lt; ymd("2000-8-21")) %&gt;%
+  fasster(taylor ~ DayType %S% (poly(1) + trig(48, 16))) %&gt;%
+  forecast(newdata=tbl_taylor %&gt;%
+             filter(index &gt;= ymd("2000-8-21"))) %&gt;%
+  autoplot() + 
+  ylab("Electricity Demand (Megawatts)") + 
+  xlab("Time (5 June 2000 - 27 August 2000)")
+```
+
+---
+class: inverse, top
+
+.sticker-float[![fasster](resources/fasster.png)]
+&lt;br&gt;
+.center[
+# The fasster package
+]
+
+&lt;br&gt;
+&lt;br&gt;
+
+The **development** version can be installed from GitHub using:
+
+
+```r
+# install.packages("devtools")
+devtools::install_github("mitchelloharawild/fasster")
+```
+    </textarea>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+});
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

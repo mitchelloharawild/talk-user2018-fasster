@@ -1,0 +1,245 @@
+---
+title: "fasster: forecasting with state switching"
+subtitle: "forecasting multiple seasonality with state switching"
+author: "Mitchell O'Hara-Wild"
+date: '13/07/2018'
+output:
+  xaringan::moon_reader:
+    chakra: libs/remark-latest.min.js
+    css: ["libs/slides.css",  "libs/animate.css"]
+    lib_dir: libs
+    seal: false
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+class: inverse 
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE, cache=TRUE, fig.width = 12)
+library(tidyverse)
+library(fasster)
+library(knitr)
+library(kableExtra)
+library(lubridate)
+library(tsibble)
+library(ggplot2)
+library(fontawesome)
+```
+
+.title[fasster]
+.sticker-float[![fasster](resources/fasster.png)]
+
+## Forecasting multiple seasonality with state switching
+
+.bottom[
+### Mitchell O'Hara-Wild (`r fa("twitter", fill="#1da1f2")`[@mitchoharawild](https://twitter.com/mitchoharawild))
+<br>
+### July 13th 2018
+
+### Slides @ [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
+]
+---
+
+.sticker-float[![fable](resources/fable.svg)]
+
+# Extending fable
+
+**fasster** objects are consistent with the **fable** package.
+
+Which provides:
+
+- Plotting of forecasts and components
+- Model extraction methods
+- Accuracy measures
+- Residual diagnostics
+
+---
+
+# Sub-daily difficulty
+```{r elecMonthly, cache = TRUE}
+tsibbledata::elecdemand %>% 
+  index_by(Time = yearmonth(index)) %>%
+  summarise(Demand = sum(Demand)) %>%
+  autoplot + 
+  ylab("Electricity Demand (GW)")
+```
+
+---
+
+# Sub-daily difficulty
+```{r elecDaily, cache = TRUE}
+tsibbledata::elecdemand %>% 
+  index_by(Time = as.Date(index)) %>%
+  summarise(Demand = sum(Demand)) %>%
+  autoplot + 
+  ylab("Electricity Demand (GW)")
+```
+
+---
+
+# Sub-daily difficulty
+```{r elecPlot, cache = TRUE}
+tsibbledata::elecdemand %>% 
+  autoplot + 
+  ylab("Electricity Demand (GW)")
+```
+---
+
+
+## Models for multiple seasonality
+```{r, cache = TRUE}
+library(timevis)
+data <- data.frame(
+  id      = 1:6,
+  content = c("MSARIMA", "DSHW", "BATS/TBATS",
+              "MLR", "GAM", "Prophet"),
+  start   = c("2000", "2003", "2010",
+              "2000", "2000", "2017"),
+  group   = rep(c("ss", "reg"), each = 3),
+  end     = rep(NA, 6)
+)
+
+grp <- data.frame(
+  id = c("ss", "reg"),
+  content = rep(c("State Space", "Regression"))
+)
+
+timevis(data, grp, showZoom = FALSE, options = list(zoomable=FALSE), width = "100%", height = "250px")
+```
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Flexible</th>
+      <th>Speed</th>
+      <th>Exogenous Regressors</th>
+      <th>Accuracy</th>
+      <th>Decompose Components</th>
+      <th>Evolving Terms</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Regression</td>
+      <td class="success">Yes</td>
+      <td class="success">Fast</td>
+      <td class="success">Yes</td>
+      <td class="warning">Okay</td>
+      <td class="danger">No</td>
+      <td class="danger">No</td>
+    <tr>
+      <td>State&nbspSpace</td>
+      <td class="danger">No</td>
+      <td class="danger">Slow</td>
+      <td class="danger">No</td>
+      <td class="warning">Okay</td>
+      <td class="success">Yes</td>
+      <td class="success">Yes</td>
+    </tr>
+    </tr>
+  </tbody>
+</table>
+
+.center[(this table is a *massive* generalisation)]
+
+---
+class: inverse
+
+.sticker-float[![fasster](resources/fasster.png)]
+# What is fasster?
+
+### *Forecasting with Additive Switching of Seasonality, Trend & Exogenous Regressors*
+
+<br> <br> 
+
+### A state space model with the speed and flexibility of regression models
+
+---
+
+# Flexible model specification
+```{r, echo = TRUE, eval = FALSE}
+t(y) ~ model
+```
+
+## poly(n): Polynomials
+
+---
+
+# Usage (Electricity Demand)
+
+```{r elecfit, cache = TRUE}
+elec_tr <- tsibbledata::elecdemand %>%
+  filter(index < ymd("2014-03-01"))
+
+elec_fit <- elec_tr %>%
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + Temperature + Temperature^2)
+
+summary(elec_fit)
+```
+
+
+---
+
+# Forecasts (Electricity demand)
+
+```{r elecfc}
+elec_ts <- tsibbledata::elecdemand %>%
+  tsibble::filter(index >= ymd("2014-03-01")) %>%
+  head(48*7*3)
+
+elec_fc <- elec_fit %>% 
+  forecast(newdata = elec_ts) 
+
+elec_fc %>%
+  autoplot(level = NULL) + 
+  geom_line(aes(x=index, y=Demand), data=elec_ts)
+```
+
+---
+
+# Example workflow
+
+The way **fasster** integrates with other package is clear in this example of forecasting half-hourly electricity demand (from Taylor, 2003).
+
+```{r, echo=TRUE, eval=FALSE}
+{{library(fasster)
+library(tidyverse)
+library(lubridate)
+library(forecast)}}
+
+tbl_taylor <- as_tsibble(taylor) %>%
+  mutate(index = seq(ymd_h("2000-6-5 00"), by="30 mins", length.out=length(taylor)),
+         DayType = ifelse(wday(index) %in% 2:6, "Weekday", "Weekend")) %>% 
+  filter(month(index) == 8)
+tbl_taylor %>%
+  filter(index < ymd("2000-8-21")) %>%
+  fasster(taylor ~ DayType %S% (poly(1) + trig(48, 16))) %>%
+  forecast(newdata=tbl_taylor %>%
+             filter(index >= ymd("2000-8-21"))) %>%
+  autoplot() + 
+  ylab("Electricity Demand (Megawatts)") + 
+  xlab("Time (5 June 2000 - 27 August 2000)")
+```
+
+---
+class: inverse, top
+
+.sticker-float[![fasster](resources/fasster.png)]
+<br>
+.center[
+# The fasster package
+]
+
+<br>
+<br>
+
+The **development** version can be installed from GitHub using:
+
+```{r, echo = TRUE, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("mitchelloharawild/fasster")
+```
