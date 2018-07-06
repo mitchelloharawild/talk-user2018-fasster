@@ -1,5 +1,5 @@
 ---
-title: "fasster: forecasting with state switching"
+title: "fasster::useR2018"
 subtitle: "forecasting multiple seasonality with state switching"
 author: "Mitchell O'Hara-Wild"
 date: '13/07/2018'
@@ -17,8 +17,8 @@ output:
 class: inverse 
 
 ```{r setup, include=FALSE}
-options(htmltools.dir.version = FALSE)
-knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning = FALSE, cache=TRUE, fig.width = 12)
+options(htmltools.dir.version = FALSE,
+        width = 87)
 library(tidyverse)
 library(fasster)
 library(knitr)
@@ -27,6 +27,23 @@ library(lubridate)
 library(tsibble)
 library(ggplot2)
 library(fontawesome)
+
+opts_chunk$set(
+  echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
+  fig.path = 'figure/', cache.path = 'cache/', fig.align = 'center', 
+  fig.width = 12, fig.show = 'hold', 
+  cache = TRUE, external = TRUE, dev = 'svglite', dev.args = list(bg = "transparent")
+)
+
+
+theme_set(
+  theme_grey(base_size = 16) + 
+  theme(
+    legend.position = "bottom",
+    plot.background = element_rect(fill = "transparent"),
+    legend.background = element_rect(fill = "transparent")
+  )
+)
 ```
 
 .title[fasster]
@@ -41,65 +58,123 @@ library(fontawesome)
 
 ### Slides @ [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
 ]
----
-
-.sticker-float[![fable](resources/fable.svg)]
-
-# Extending fable
-
-**fasster** objects are consistent with the **fable** package.
-
-Which provides:
-
-- Plotting of forecasts and components
-- Model extraction methods
-- Accuracy measures
-- Residual diagnostics
 
 ---
+class: center
 
-# Sub-daily difficulty
+.animated.fadeIn[
+## Time-series data is changing
+
+### More data, more often.
+
+<hr>
+]
+
+---
+class: center
+
+## Time-series data is changing
+
+### More data, more often.
+
+<hr>
+
+.animated.fadeIn[
+## Complicated patterns emerge
+
+.pull-left[
+### Multiple seasonality
+### Lots of data
+]
+.pull-right[
+### Missing values
+### Additional noise
+]
+
+<hr> 
+]
+
+---
+class: center
+
+## Time-series data is changing
+
+### More data, more often.
+
+<hr>
+
+## Complicated patterns emerge
+
+.pull-left[
+### Multiple seasonality
+### Lots of data
+]
+.pull-right[
+### Missing values
+### Additional noise
+]
+
+<hr> 
+
+.animated.fadeIn[
+## New tools are needed
+.sticker[![tsibble](resources/tsibble.svg)]
+.sticker[![fable](resources/fable.svg)]
+.sticker[![fasster](resources/fasster.png)]
+]
+
+---
+class: inverse, center, top
+
+background-image: url(resources/electricity.jpeg)
+background-size: cover
+
+# Electricity demand
+
+---
+
+# Electricity demand
 ```{r elecMonthly, cache = TRUE}
 tsibbledata::elecdemand %>% 
   index_by(Time = yearmonth(index)) %>%
   summarise(Demand = sum(Demand)) %>%
-  autoplot + 
+  autoplot(Demand) + 
   ylab("Electricity Demand (GW)")
 ```
 
 ---
 
-# Sub-daily difficulty
+# Electricity demand
 ```{r elecDaily, cache = TRUE}
 tsibbledata::elecdemand %>% 
   index_by(Time = as.Date(index)) %>%
   summarise(Demand = sum(Demand)) %>%
-  autoplot + 
+  autoplot(Demand) + 
   ylab("Electricity Demand (GW)")
 ```
 
 ---
 
-# Sub-daily difficulty
+# Electricity demand
 ```{r elecPlot, cache = TRUE}
 tsibbledata::elecdemand %>% 
-  autoplot + 
+  autoplot(Demand) + 
   ylab("Electricity Demand (GW)")
 ```
 ---
 
 
-## Models for multiple seasonality
+# Models for multiple seasonality
 ```{r, cache = TRUE}
 library(timevis)
 data <- data.frame(
-  id      = 1:6,
-  content = c("MSARIMA", "DSHW", "BATS/TBATS",
+  id      = 1:7,
+  content = c("MSARIMA", "DSHW", "BATS/TBATS", "FASSTER",
               "MLR", "GAM", "Prophet"),
-  start   = c("2000", "2003", "2010",
+  start   = c("2000", "2003", "2010", "2018",
               "2000", "2000", "2017"),
-  group   = rep(c("ss", "reg"), each = 3),
-  end     = rep(NA, 6)
+  group   = c("ss", rep(c("ss", "reg"), each = 3)),
+  end     = rep(NA, 7)
 )
 
 grp <- data.frame(
@@ -107,7 +182,7 @@ grp <- data.frame(
   content = rep(c("State Space", "Regression"))
 )
 
-timevis(data, grp, showZoom = FALSE, options = list(zoomable=FALSE), width = "100%", height = "250px")
+timevis(data, grp, showZoom = FALSE, options = list(zoomable=FALSE, showCurrentTime=FALSE), width = "100%", height = "250px")
 ```
 
 <table class="table">
@@ -124,14 +199,6 @@ timevis(data, grp, showZoom = FALSE, options = list(zoomable=FALSE), width = "10
   </thead>
   <tbody>
     <tr>
-      <td>Regression</td>
-      <td class="success">Yes</td>
-      <td class="success">Fast</td>
-      <td class="success">Yes</td>
-      <td class="warning">Okay</td>
-      <td class="danger">No</td>
-      <td class="danger">No</td>
-    <tr>
       <td>State&nbspSpace</td>
       <td class="danger">No</td>
       <td class="danger">Slow</td>
@@ -140,6 +207,14 @@ timevis(data, grp, showZoom = FALSE, options = list(zoomable=FALSE), width = "10
       <td class="success">Yes</td>
       <td class="success">Yes</td>
     </tr>
+    <tr>
+      <td>Regression</td>
+      <td class="success">Yes</td>
+      <td class="success">Fast</td>
+      <td class="success">Yes</td>
+      <td class="warning">Okay</td>
+      <td class="danger">No</td>
+      <td class="danger">No</td>
     </tr>
   </tbody>
 </table>
@@ -152,11 +227,33 @@ class: inverse
 .sticker-float[![fasster](resources/fasster.png)]
 # What is fasster?
 
-### *Forecasting with Additive Switching of Seasonality, Trend & Exogenous Regressors*
+### * **F**orecasting with **A**dditive **S**witching of **S**easonality, **T**rend & **E**xogenous **R**egressors*
 
 <br> <br> 
 
-### A state space model with the speed and flexibility of regression models
+### A state space model that is:
+.pull-left[
+* ### Flexible
+* ### Fast
+]
+.pull-right[
+* ### Supports exogenous regressors
+* ### Handles missing values
+]
+---
+
+.sticker-float[![fable](resources/fable.svg)]
+
+# Extending fable
+
+**fasster** objects are consistent with the **fable** package.
+
+Which provides:
+
+- Plotting of forecasts and components
+- Model extraction methods
+- Accuracy measures
+- Residual diagnostics
 
 ---
 
@@ -181,7 +278,7 @@ y ~ DayType %S% (poly(1) + trig(48, 14))
 
 ```{r switching, cache = TRUE}
 tsibbledata::elecdemand %>% 
-  filter(month(index) == 7) %>%
+  filter(month(index) == 6) %>%
   mutate(
     `Working Day` = ifelse(WorkDay == 1, Demand, NA),
     `Non-working Day` = ifelse(WorkDay == 0, Demand, NA)
@@ -197,19 +294,37 @@ tsibbledata::elecdemand %>%
 
 ---
 
-# Usage Example (Electricity Demand)
+# Modelling electricity demand
 
-```{r elecfit, echo = TRUE, eval = FALSE, cache = TRUE}
-{{library(tsibble)
-library(fasster)}}
-
+```{r electr, echo = TRUE, cache = TRUE}
 elec_tr <- tsibbledata::elecdemand %>%
   filter(index < ymd("2014-03-01"))
+elec_tr
+```
 
+---
+
+# Modelling electricity demand
+
+```{r}
+elec_tr %>%
+  gather("Series", "Value", Demand, Temperature) %>%
+  ggplot(aes(x=index, y=Value, group=Series)) +
+  geom_line() +
+  facet_grid(Series ~ ., scales = "free_y") + 
+  ylab("Electricity demanded (GW)") + 
+  xlab("Date") + 
+  ggtitle("Electricity demanded and temperature")
+```
+
+
+---
+
+```{r, elecfit, echo = TRUE, cache = TRUE}
 elec_fit <- elec_tr %>%
-  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + Temperature + Temperature^2)
-
-summary(elec_fit)
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + 
+                        Temperature + Temperature^2)
+elec_fit
 ```
 
 
@@ -217,10 +332,24 @@ summary(elec_fit)
 
 # Components
 
-Insert component decomposition plot here... perhaps too complicated to discuss
-```{r, echo = TRUE, eval = FALSE}
+```{r elec-comp, echo = TRUE, cache = TRUE}
 components(elec_fit)
 ```
+
+---
+
+# Components (Seasonality)
+
+```{r comp-plot1, cache = FALSE}
+fit_comp <- components(elec_fit)
+fit_comp %>%
+  select(index, `WorkDay_0/trig(48, 16)`, `WorkDay_1/trig(48, 16)`) %>% 
+  gather("Term", "Value", -index) %>%
+  ggplot(aes(x = hour(index) + minute(index)/60, y = Value, colour = Term, group = interaction(Term, date(index)))) + 
+  geom_line() + 
+  xlab("Hour")
+```
+
 
 ---
 
@@ -251,7 +380,17 @@ Visually compare with actual values
 
 # Streaming data
 
-Animation here
+Mention that new data can come in without refitting the model
+
+```{r stream_data, echo = TRUE}
+elec_tr %>% 
+  mutate()
+```
+```{r}
+elec_fit %>%
+  stream(elec_ts)
+```
+
 
 ---
 class: inverse, top
@@ -262,8 +401,51 @@ class: inverse, top
 # The fasster package
 ]
 
-<br>
-<br>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Model</th>
+      <th>Flexible</th>
+      <th>Speed</th>
+      <th>Exogenous Regressors</th>
+      <th>Accuracy</th>
+      <th>Decompose Components</th>
+      <th>Evolving Terms</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>State&nbspSpace</td>
+      <td class="danger">No</td>
+      <td class="danger">Slow</td>
+      <td class="danger">No</td>
+      <td class="warning">Okay</td>
+      <td class="success">Yes</td>
+      <td class="success">Yes</td>
+    </tr>
+    <tr>
+      <td>Regression</td>
+      <td class="success">Yes</td>
+      <td class="success">Fast</td>
+      <td class="success">Yes</td>
+      <td class="warning">Okay</td>
+      <td class="danger">No</td>
+      <td class="danger">No</td>
+    </tr>
+    <tr>
+      <td>fasster</td>
+      <td class="success">No</td>
+      <td class="warning">Okay*</td>
+      <td class="success">No</td>
+      <td class="warning">Okay</td>
+      <td class="success">Yes</td>
+      <td class="success">Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+.footnote[[*] Much faster than state space models, similar speed to prophet]
 
 The **development** version can be installed from GitHub using:
 

@@ -6,8 +6,8 @@ h1, h2, h3 {
   margin-bottom: 0;
 }
 
-h1 {
-  font-weight: 600;
+.remark-slide-content h1 {
+  font-size:45px;
   padding-bottom:20px;
 }
 
@@ -41,10 +41,9 @@ a, a > code {
 	height: 200px;
 	float: right;
 }
-
-.large-code > .remark-code {
-  font-size:35px;
-  text-align: center;
+.sticker img{
+  height: 200px;
+  display:inline;
 }
 
 p, li {
@@ -73,11 +72,16 @@ p, li {
 
 .remark-code-line-highlighted     { background-color: #ffff88; }
 
+.r.remark-code {
+  font-size:18px;
+}
+
 .remark-code {
-	text-shadow: 0 0 0 #fff
+	text-shadow: 0 0 0 #fff;
+	font-size: 14px;
 }
 .remark-slide-content{
-  background-color: #f4f4f4;
+  background-color: #fbfbfb;
   color: #333333;
 }
 .inverse {
@@ -87,6 +91,10 @@ p, li {
 .inverse h1, .inverse h2, .inverse h3 {
   color: #f4f4f4;
 }
+.inverse h1{
+  font-weight: 600;
+}
+
 /* Two-column layout */
 .left-column {
   color: #777;
@@ -117,6 +125,8 @@ p, li {
 .table{
 	width: 100%;
 	text-align: center;
+  background-color: #fbfbfb;
+  color: #333333;
 }
 
 .table > tbody > tr > td.success {

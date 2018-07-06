@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>fasster: forecasting with state switching</title>
+    <title>fasster::useR2018</title>
     <meta charset="utf-8">
     <meta name="author" content="Mitchell O’Hara-Wild" />
     <script src="libs/htmlwidgets/htmlwidgets.js"></script>
@@ -37,6 +37,160 @@ class: inverse
 
 ### Slides @ [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
 ]
+
+---
+class: center
+
+.animated.fadeIn[
+## Time-series data is changing
+
+### More data, more often.
+
+&lt;hr&gt;
+]
+
+---
+class: center
+
+## Time-series data is changing
+
+### More data, more often.
+
+&lt;hr&gt;
+
+.animated.fadeIn[
+## Complicated patterns emerge
+
+.pull-left[
+### Multiple seasonality
+### Lots of data
+]
+.pull-right[
+### Missing values
+### Additional noise
+]
+
+&lt;hr&gt; 
+]
+
+---
+class: center
+
+## Time-series data is changing
+
+### More data, more often.
+
+&lt;hr&gt;
+
+## Complicated patterns emerge
+
+.pull-left[
+### Multiple seasonality
+### Lots of data
+]
+.pull-right[
+### Missing values
+### Additional noise
+]
+
+&lt;hr&gt; 
+
+.animated.fadeIn[
+## New tools are needed
+.sticker[![tsibble](resources/tsibble.svg)]
+.sticker[![fable](resources/fable.svg)]
+.sticker[![fasster](resources/fasster.png)]
+]
+
+---
+class: inverse, center, top
+
+background-image: url(resources/electricity.jpeg)
+background-size: cover
+
+# Electricity demand
+
+---
+
+# Electricity demand
+&lt;img src="figure/elecMonthly-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Electricity demand
+&lt;img src="figure/elecDaily-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Electricity demand
+&lt;img src="figure/elecPlot-1.svg" style="display: block; margin: auto;" /&gt;
+---
+
+
+# Models for multiple seasonality
+<div id="htmlwidget-aab436d3bfa6a68f8b97" class="timevis html-widget" style="width:100%;height:250px;">
+<div class="btn-group zoom-menu">
+<button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
+<button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
+</div>
+</div>
+<script type="application/json" data-for="htmlwidget-aab436d3bfa6a68f8b97">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"2000","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"BATS/TBATS","start":"2010","group":"ss"},{"id":"4","content":"FASSTER","start":"2018","group":"ss"},{"id":"5","content":"MLR","start":"2000","group":"reg"},{"id":"6","content":"GAM","start":"2000","group":"reg"},{"id":"7","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false,"showCurrentTime":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
+
+&lt;table class="table"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Model&lt;/th&gt;
+      &lt;th&gt;Flexible&lt;/th&gt;
+      &lt;th&gt;Speed&lt;/th&gt;
+      &lt;th&gt;Exogenous Regressors&lt;/th&gt;
+      &lt;th&gt;Accuracy&lt;/th&gt;
+      &lt;th&gt;Decompose Components&lt;/th&gt;
+      &lt;th&gt;Evolving Terms&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;State&amp;nbspSpace&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="danger"&gt;Slow&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Regression&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="success"&gt;Fast&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+.center[(this table is a *massive* generalisation)]
+
+---
+class: inverse
+
+.sticker-float[![fasster](resources/fasster.png)]
+# What is fasster?
+
+### * **F**orecasting with **A**dditive **S**witching of **S**easonality, **T**rend &amp; **E**xogenous **R**egressors*
+
+&lt;br&gt; &lt;br&gt; 
+
+### A state space model that is:
+.pull-left[
+* ### Flexible
+* ### Fast
+]
+.pull-right[
+* ### Supports exogenous regressors
+* ### Handles missing values
+]
 ---
 
 .sticker-float[![fable](resources/fable.svg)]
@@ -54,87 +208,11 @@ Which provides:
 
 ---
 
-# Sub-daily difficulty
-![](index_files/figure-html/elecMonthly-1.png)&lt;!-- --&gt;
-
----
-
-# Sub-daily difficulty
-![](index_files/figure-html/elecDaily-1.png)&lt;!-- --&gt;
-
----
-
-# Sub-daily difficulty
-![](index_files/figure-html/elecPlot-1.png)&lt;!-- --&gt;
----
-
-
-## Models for multiple seasonality
-<div id="htmlwidget-d7e97da393558de1b062" class="timevis html-widget" style="width:100%;height:250px;">
-<div class="btn-group zoom-menu">
-<button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
-<button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
-</div>
-</div>
-<script type="application/json" data-for="htmlwidget-d7e97da393558de1b062">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"2000","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"BATS/TBATS","start":"2010","group":"ss"},{"id":"4","content":"MLR","start":"2000","group":"reg"},{"id":"5","content":"GAM","start":"2000","group":"reg"},{"id":"6","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
-
-&lt;table class="table"&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;Model&lt;/th&gt;
-      &lt;th&gt;Flexible&lt;/th&gt;
-      &lt;th&gt;Speed&lt;/th&gt;
-      &lt;th&gt;Exogenous Regressors&lt;/th&gt;
-      &lt;th&gt;Accuracy&lt;/th&gt;
-      &lt;th&gt;Decompose Components&lt;/th&gt;
-      &lt;th&gt;Evolving Terms&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;Regression&lt;/td&gt;
-      &lt;td class="success"&gt;Yes&lt;/td&gt;
-      &lt;td class="success"&gt;Fast&lt;/td&gt;
-      &lt;td class="success"&gt;Yes&lt;/td&gt;
-      &lt;td class="warning"&gt;Okay&lt;/td&gt;
-      &lt;td class="danger"&gt;No&lt;/td&gt;
-      &lt;td class="danger"&gt;No&lt;/td&gt;
-    &lt;tr&gt;
-      &lt;td&gt;State&amp;nbspSpace&lt;/td&gt;
-      &lt;td class="danger"&gt;No&lt;/td&gt;
-      &lt;td class="danger"&gt;Slow&lt;/td&gt;
-      &lt;td class="danger"&gt;No&lt;/td&gt;
-      &lt;td class="warning"&gt;Okay&lt;/td&gt;
-      &lt;td class="success"&gt;Yes&lt;/td&gt;
-      &lt;td class="success"&gt;Yes&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-.center[(this table is a *massive* generalisation)]
-
----
-class: inverse
-
-.sticker-float[![fasster](resources/fasster.png)]
-# What is fasster?
-
-### *Forecasting with Additive Switching of Seasonality, Trend &amp; Exogenous Regressors*
-
-&lt;br&gt; &lt;br&gt; 
-
-### A state space model with the speed and flexibility of regression models
-
----
-
 # Flexible model specification
-.large-code[
 
 ```r
 log(y + 1) ~ poly(1) + seas(24) + trig(24*365.25, 10) + x + z^2
 ```
-]
 
 ### poly(n): Polynomials
 ### seas(s): Seasonal factors
@@ -151,25 +229,59 @@ y ~ DayType %S% (poly(1) + trig(48, 14))
 ```
 
 
-![](index_files/figure-html/switching-1.png)&lt;!-- --&gt;
+&lt;img src="figure/switching-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
 
-# Usage Example (Electricity Demand)
+# Modelling electricity demand
 
 
 ```r
-*library(tsibble)
-*library(fasster)
-
 elec_tr &lt;- tsibbledata::elecdemand %&gt;%
   filter(index &lt; ymd("2014-03-01"))
+elec_tr
+```
 
+```
+#&gt; # A tsibble: 2,832 x 4 [30MINUTE]
+#&gt;    index               Demand WorkDay Temperature
+#&gt;    &lt;dttm&gt;               &lt;dbl&gt;   &lt;dbl&gt;       &lt;dbl&gt;
+#&gt;  1 2014-01-01 00:00:00   3.91       0        18.2
+#&gt;  2 2014-01-01 00:30:00   3.67       0        17.9
+#&gt;  3 2014-01-01 01:00:00   3.50       0        17.6
+#&gt;  4 2014-01-01 01:30:00   3.34       0        16.8
+#&gt;  5 2014-01-01 02:00:00   3.20       0        16.3
+#&gt;  6 2014-01-01 02:30:00   3.10       0        16.6
+#&gt;  7 2014-01-01 03:00:00   3.04       0        16.6
+#&gt;  8 2014-01-01 03:30:00   3.01       0        16.7
+#&gt;  9 2014-01-01 04:00:00   3.02       0        16.2
+#&gt; 10 2014-01-01 04:30:00   3.03       0        16.6
+#&gt; # ... with 2,822 more rows
+```
+
+---
+
+# Modelling electricity demand
+
+&lt;img src="figure/unnamed-chunk-4-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+
+```r
 elec_fit &lt;- elec_tr %&gt;%
-  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + Temperature + Temperature^2)
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + 
+                        Temperature + Temperature^2)
+elec_fit
+```
 
-summary(elec_fit)
+```
+#&gt; # A mable: 1 model [30MINUTE]
+#&gt;   data                  model  
+#&gt;   &lt;list&gt;                &lt;model&gt;
+#&gt; 1 &lt;tsibble [2,832 × 4]&gt; FASSTER
 ```
 
 
@@ -177,17 +289,41 @@ summary(elec_fit)
 
 # Components
 
-Insert component decomposition plot here... perhaps too complicated to discuss
 
 ```r
 components(elec_fit)
 ```
 
+```
+#&gt; # A tsibble: 2,832 x 7 [30MINUTE]
+#&gt;    index               Temperature `Temperature^2` `WorkDay_0/poly(… `WorkDay_0/trig(…
+#&gt;    &lt;dttm&gt;                    &lt;dbl&gt;           &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;
+#&gt;  1 2014-01-01 00:00:00     -0.0189        0.000512              1.55          -0.00826
+#&gt;  2 2014-01-01 00:30:00     -0.0189        0.000512              1.55          -0.0826 
+#&gt;  3 2014-01-01 01:00:00     -0.0189        0.000512              1.55          -0.118  
+#&gt;  4 2014-01-01 01:30:00     -0.0189        0.000512              1.55          -0.167  
+#&gt;  5 2014-01-01 02:00:00     -0.0188        0.000510              1.55          -0.198  
+#&gt;  6 2014-01-01 02:30:00     -0.0186        0.000509              1.54          -0.227  
+#&gt;  7 2014-01-01 03:00:00     -0.0187        0.000510              1.54          -0.244  
+#&gt;  8 2014-01-01 03:30:00     -0.0187        0.000509              1.53          -0.249  
+#&gt;  9 2014-01-01 04:00:00     -0.0195        0.000521              1.54          -0.250  
+#&gt; 10 2014-01-01 04:30:00     -0.0184        0.000505              1.52          -0.232  
+#&gt; # ... with 2,822 more rows, and 2 more variables: `WorkDay_1/poly(1)` &lt;dbl&gt;,
+#&gt; #   `WorkDay_1/trig(48, 16)` &lt;dbl&gt;
+```
+
+---
+
+# Components (Seasonality)
+
+&lt;img src="figure/comp-plot1-1.svg" style="display: block; margin: auto;" /&gt;
+
+
 ---
 
 # Forecasts (Electricity demand)
 
-![](index_files/figure-html/elecfc-1.png)&lt;!-- --&gt;
+&lt;img src="figure/elecfc-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
@@ -212,8 +348,51 @@ class: inverse, top
 # The fasster package
 ]
 
-&lt;br&gt;
-&lt;br&gt;
+
+&lt;table class="table"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Model&lt;/th&gt;
+      &lt;th&gt;Flexible&lt;/th&gt;
+      &lt;th&gt;Speed&lt;/th&gt;
+      &lt;th&gt;Exogenous Regressors&lt;/th&gt;
+      &lt;th&gt;Accuracy&lt;/th&gt;
+      &lt;th&gt;Decompose Components&lt;/th&gt;
+      &lt;th&gt;Evolving Terms&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;State&amp;nbspSpace&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="danger"&gt;Slow&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Regression&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="success"&gt;Fast&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="danger"&gt;No&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;fasster&lt;/td&gt;
+      &lt;td class="success"&gt;No&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay*&lt;/td&gt;
+      &lt;td class="success"&gt;No&lt;/td&gt;
+      &lt;td class="warning"&gt;Okay&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+      &lt;td class="success"&gt;Yes&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+.footnote[[*] Much faster than state space models, similar speed to prophet]
 
 The **development** version can be installed from GitHub using:
 
