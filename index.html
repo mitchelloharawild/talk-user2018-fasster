@@ -129,44 +129,59 @@ class: inverse
 ---
 
 # Flexible model specification
+.large-code[
 
 ```r
-t(y) ~ model
+log(y + 1) ~ poly(1) + seas(24) + trig(24*365.25, 10) + x + z^2
 ```
+]
 
-## t(y) ~ model
+### poly(n): Polynomials
+### seas(s): Seasonal factors
+### trig(s, q): Seasonal fourier terms
+### ARMA(ar, ma): ARMA processes
+### xreg: Exogenous regressors
 
 ---
 
-# Usage (Electricity Demand)
+# %S%: State switching
 
-
-```
-## FASSTER Model:
-##  log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + Temperature +  
-## 
-##  FASSTER Model:
-##      Temperature^2 
-## 
-## Estimated variances:
-##  State noise variances (W):
-##   Temperature
-##    4.4783e-19
-##   Temperature^2
-##    1.3235e-21
-##   WorkDay_0/poly(1)
-##    1.5024e-05
-##   WorkDay_0/trig(48, 16)
-##    5.4023e-20 9.1556e-20 3.1563e-20 1.5040e-20 5.9321e-20 1.1434e-20 4.7195e-20 4.4684e-20 6.2725e-20 6.7815e-20 2.7957e-20 5.7649e-20 3.7906e-20 4.6610e-20 3.6093e-20 1.9166e-20 1.8066e-20 1.5759e-20 1.2604e-20 1.2353e-20 1.1740e-20 1.5171e-20 4.1919e-21 6.2628e-21 5.6465e-21 1.7402e-20 1.8481e-21 8.6665e-21 1.9061e-20 1.3466e-20 8.9988e-21 1.5821e-20
-##   WorkDay_1/poly(1)
-##    2.4805e-05
-##   WorkDay_1/trig(48, 16)
-##    2.3815e-20 1.9794e-20 2.7061e-20 1.8364e-20 2.5340e-20 2.6380e-20 2.2770e-20 2.0017e-20 2.6746e-20 3.2013e-20 2.8736e-20 7.5419e-20 7.8991e-20 3.4856e-20 4.0438e-20 9.7090e-20 9.3744e-20 5.0359e-20 5.8476e-20 8.4130e-20 5.5919e-20 4.9278e-20 6.8488e-20 6.6973e-20 9.2413e-20 1.9480e-20 2.1598e-20 3.2756e-20 9.3308e-21 2.1707e-20 5.6945e-21 7.1177e-21
-## 
-##  Observation noise variance (V):
-##   9.5575e-05
+```r
+y ~ DayType %S% (poly(1) + trig(48, 14))
 ```
 
+
+![](index_files/figure-html/switching-1.png)&lt;!-- --&gt;
+
+
+---
+
+# Usage Example (Electricity Demand)
+
+
+```r
+*library(tsibble)
+*library(fasster)
+
+elec_tr &lt;- tsibbledata::elecdemand %&gt;%
+  filter(index &lt; ymd("2014-03-01"))
+
+elec_fit &lt;- elec_tr %&gt;%
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + Temperature + Temperature^2)
+
+summary(elec_fit)
+```
+
+
+---
+
+# Components
+
+Insert component decomposition plot here... perhaps too complicated to discuss
+
+```r
+components(elec_fit)
+```
 
 ---
 
@@ -174,32 +189,19 @@ t(y) ~ model
 
 ![](index_files/figure-html/elecfc-1.png)&lt;!-- --&gt;
 
+
 ---
 
-# Example workflow
+# Interpolation
 
-The way **fasster** integrates with other package is clear in this example of forecasting half-hourly electricity demand (from Taylor, 2003).
+Insert missing value plots here, filled with fasster modelled fits
+Visually compare with actual values
 
+---
 
-```r
-*library(fasster)
-*library(tidyverse)
-*library(lubridate)
-*library(forecast)
+# Streaming data
 
-tbl_taylor &lt;- as_tsibble(taylor) %&gt;%
-  mutate(index = seq(ymd_h("2000-6-5 00"), by="30 mins", length.out=length(taylor)),
-         DayType = ifelse(wday(index) %in% 2:6, "Weekday", "Weekend")) %&gt;% 
-  filter(month(index) == 8)
-tbl_taylor %&gt;%
-  filter(index &lt; ymd("2000-8-21")) %&gt;%
-  fasster(taylor ~ DayType %S% (poly(1) + trig(48, 16))) %&gt;%
-  forecast(newdata=tbl_taylor %&gt;%
-             filter(index &gt;= ymd("2000-8-21"))) %&gt;%
-  autoplot() + 
-  ylab("Electricity Demand (Megawatts)") + 
-  xlab("Time (5 June 2000 - 27 August 2000)")
-```
+Animation here
 
 ---
 class: inverse, top

@@ -215,9 +215,18 @@ summary(elec_fit)
 
 ---
 
+# Components
+
+Insert component decomposition plot here... perhaps too complicated to discuss
+```{r, echo = TRUE, eval = FALSE}
+components(elec_fit)
+```
+
+---
+
 # Forecasts (Electricity demand)
 
-```{r elecfc}
+```{r elecfc, cache = TRUE}
 elec_ts <- tsibbledata::elecdemand %>%
   tsibble::filter(index >= ymd("2014-03-01")) %>%
   head(48*7*3)
@@ -230,31 +239,19 @@ elec_fc %>%
   geom_line(aes(x=index, y=Demand), data=elec_ts)
 ```
 
+
 ---
 
-# Example workflow
+# Interpolation
 
-The way **fasster** integrates with other package is clear in this example of forecasting half-hourly electricity demand (from Taylor, 2003).
+Insert missing value plots here, filled with fasster modelled fits
+Visually compare with actual values
 
-```{r, echo=TRUE, eval=FALSE}
-{{library(fasster)
-library(tidyverse)
-library(lubridate)
-library(forecast)}}
+---
 
-tbl_taylor <- as_tsibble(taylor) %>%
-  mutate(index = seq(ymd_h("2000-6-5 00"), by="30 mins", length.out=length(taylor)),
-         DayType = ifelse(wday(index) %in% 2:6, "Weekday", "Weekend")) %>% 
-  filter(month(index) == 8)
-tbl_taylor %>%
-  filter(index < ymd("2000-8-21")) %>%
-  fasster(taylor ~ DayType %S% (poly(1) + trig(48, 16))) %>%
-  forecast(newdata=tbl_taylor %>%
-             filter(index >= ymd("2000-8-21"))) %>%
-  autoplot() + 
-  ylab("Electricity Demand (Megawatts)") + 
-  xlab("Time (5 June 2000 - 27 August 2000)")
-```
+# Streaming data
+
+Animation here
 
 ---
 class: inverse, top

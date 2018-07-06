@@ -42,6 +42,11 @@ a, a > code {
 	float: right;
 }
 
+.large-code > .remark-code {
+  font-size:35px;
+  text-align: center;
+}
+
 p, li {
     font-size: 30px;
 }
