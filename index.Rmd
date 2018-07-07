@@ -229,44 +229,81 @@ class: inverse
 
 ### * **F**orecasting with **A**dditive **S**witching of **S**easonality, **T**rend & **E**xogenous **R**egressors*
 
-<br> <br> 
+<br>
+
+--
 
 ### A state space model that is:
 .pull-left[
 * ### Flexible
-* ### Fast
 ]
 .pull-right[
-* ### Supports exogenous regressors
-* ### Handles missing values
+* ### Fast
 ]
+
+<br>
+--
+
+### With support for:
+* ### Missing values
+* ### Exogenous regressors
 ---
 
 .sticker-float[![fable](resources/fable.svg)]
 
 # Extending fable
 
-**fasster** objects are consistent with the **fable** package.
+**fasster** is the first extension of fable.
 
-Which provides:
+<br>
 
-- Plotting of forecasts and components
-- Model extraction methods
-- Accuracy measures
-- Residual diagnostics
+This allows fasster models to work with other features from the fable package.
+
+* Consistent output and graphics
+* Usable in combination forecasts
+
+<br>
+
+Uses formula based model specification:
+
+.panel.panel-default[.panel-body.largecode[
+t(y) ~ specials
+]]
 
 ---
 
-# Flexible model specification
-```{r, echo = TRUE, eval = FALSE}
-log(y + 1) ~ poly(1) + seas(24) + trig(24*365.25, 10) + x + z^2
+# Supported specials for fasster
+
+```{r}
+tribble(
+  ~ Function, ~ Description,
+  "poly(n)", "Polynomials",
+  "seas(s)", "Seasonal factors",
+  "trig(s, q)", "Seasonal fourier terms",
+  "ARMA(ar, ma)", "ARMA processes",
+  "%S%", "State switching",
+  "xreg", "Exogenous regressors",
+  "custom()", "Custom dlm matrices"
+) %>% 
+  kable(format = "html") %>%
+  kableExtra::kable_styling(font_size = 26)
 ```
 
-### poly(n): Polynomials
-### seas(s): Seasonal factors
-### trig(s, q): Seasonal fourier terms
-### ARMA(ar, ma): ARMA processes
-### xreg: Exogenous regressors
+---
+class: inverse
+
+.sticker-float[![fasster](resources/fasster.png)]
+# Modelling with fasster
+
+---
+
+# Modelling electricity demand
+
+```{r electr, echo = TRUE, cache = TRUE}
+elec_tr <- tsibbledata::elecdemand %>%
+  filter(index < ymd("2014-03-01"))
+elec_tr
+```
 
 ---
 
@@ -289,17 +326,6 @@ tsibbledata::elecdemand %>%
   xlab("Time [30 MINUTES]") + 
   ylab("Electricity Demand (GW)") + 
   theme(legend.position = "bottom")
-```
-
-
----
-
-# Modelling electricity demand
-
-```{r electr, echo = TRUE, cache = TRUE}
-elec_tr <- tsibbledata::elecdemand %>%
-  filter(index < ymd("2014-03-01"))
-elec_tr
 ```
 
 ---
@@ -382,13 +408,18 @@ Visually compare with actual values
 
 Mention that new data can come in without refitting the model
 
-```{r stream_data, echo = TRUE}
+```{r stream_data}
 elec_tr %>% 
-  mutate()
+  autoplot(Demand) + 
+  geom_line(aes(x = index, y = Demand, colour = "New streaming data"), data = head(elec_ts, 48*7))
 ```
-```{r}
+---
+
+```{r stream_fc, echo = TRUE}
 elec_fit %>%
-  stream(elec_ts)
+  stream(head(elec_ts, 48*7)) %>%
+  forecast(tail(elec_ts, -48*7)) %>%
+  autoplot(level = NULL)
 ```
 
 

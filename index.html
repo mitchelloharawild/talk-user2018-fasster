@@ -128,13 +128,13 @@ background-size: cover
 
 
 # Models for multiple seasonality
-<div id="htmlwidget-aab436d3bfa6a68f8b97" class="timevis html-widget" style="width:100%;height:250px;">
+<div id="htmlwidget-12277bf35dc820d3ea64" class="timevis html-widget" style="width:100%;height:250px;">
 <div class="btn-group zoom-menu">
 <button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
 <button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
 </div>
 </div>
-<script type="application/json" data-for="htmlwidget-aab436d3bfa6a68f8b97">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"2000","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"BATS/TBATS","start":"2010","group":"ss"},{"id":"4","content":"FASSTER","start":"2018","group":"ss"},{"id":"5","content":"MLR","start":"2000","group":"reg"},{"id":"6","content":"GAM","start":"2000","group":"reg"},{"id":"7","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false,"showCurrentTime":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-12277bf35dc820d3ea64">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"2000","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"BATS/TBATS","start":"2010","group":"ss"},{"id":"4","content":"FASSTER","start":"2018","group":"ss"},{"id":"5","content":"MLR","start":"2000","group":"reg"},{"id":"6","content":"GAM","start":"2000","group":"reg"},{"id":"7","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false,"showCurrentTime":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
 
 &lt;table class="table"&gt;
   &lt;thead&gt;
@@ -180,57 +180,95 @@ class: inverse
 
 ### * **F**orecasting with **A**dditive **S**witching of **S**easonality, **T**rend &amp; **E**xogenous **R**egressors*
 
-&lt;br&gt; &lt;br&gt; 
+&lt;br&gt;
+
+--
 
 ### A state space model that is:
 .pull-left[
 * ### Flexible
-* ### Fast
 ]
 .pull-right[
-* ### Supports exogenous regressors
-* ### Handles missing values
+* ### Fast
 ]
+
+&lt;br&gt;
+--
+
+### With support for:
+* ### Missing values
+* ### Exogenous regressors
 ---
 
 .sticker-float[![fable](resources/fable.svg)]
 
 # Extending fable
 
-**fasster** objects are consistent with the **fable** package.
+**fasster** is the first extension of fable.
 
-Which provides:
+&lt;br&gt;
 
-- Plotting of forecasts and components
-- Model extraction methods
-- Accuracy measures
-- Residual diagnostics
+This allows fasster models to work with other features from the fable package.
 
----
+* Consistent output and graphics
+* Usable in combination forecasts
 
-# Flexible model specification
+&lt;br&gt;
 
-```r
-log(y + 1) ~ poly(1) + seas(24) + trig(24*365.25, 10) + x + z^2
-```
+Uses formula based model specification:
 
-### poly(n): Polynomials
-### seas(s): Seasonal factors
-### trig(s, q): Seasonal fourier terms
-### ARMA(ar, ma): ARMA processes
-### xreg: Exogenous regressors
+.panel.panel-default[.panel-body.largecode[
+t(y) ~ specials
+]]
 
 ---
 
-# %S%: State switching
+# Supported specials for fasster
 
-```r
-y ~ DayType %S% (poly(1) + trig(48, 14))
-```
+&lt;table class="table" style="font-size: 26px; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;"&gt; Function &lt;/th&gt;
+   &lt;th style="text-align:left;"&gt; Description &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; poly(n) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Polynomials &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; seas(s) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Seasonal factors &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; trig(s, q) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Seasonal fourier terms &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; ARMA(ar, ma) &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ARMA processes &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; %S% &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; State switching &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; xreg &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Exogenous regressors &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; custom() &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; Custom dlm matrices &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
+---
+class: inverse
 
-&lt;img src="figure/switching-1.svg" style="display: block; margin: auto;" /&gt;
-
+.sticker-float[![fasster](resources/fasster.png)]
+# Modelling with fasster
 
 ---
 
@@ -259,6 +297,17 @@ elec_tr
 #&gt; 10 2014-01-01 04:30:00   3.03       0        16.6
 #&gt; # ... with 2,822 more rows
 ```
+
+---
+
+# %S%: State switching
+
+```r
+y ~ DayType %S% (poly(1) + trig(48, 14))
+```
+
+
+&lt;img src="figure/switching-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -337,7 +386,21 @@ Visually compare with actual values
 
 # Streaming data
 
-Animation here
+Mention that new data can come in without refitting the model
+
+&lt;img src="figure/stream_data-1.svg" style="display: block; margin: auto;" /&gt;
+---
+
+
+```r
+elec_fit %&gt;%
+  stream(head(elec_ts, 48*7)) %&gt;%
+  forecast(tail(elec_ts, -48*7)) %&gt;%
+  autoplot(level = NULL)
+```
+
+&lt;img src="figure/stream_fc-1.svg" style="display: block; margin: auto;" /&gt;
+
 
 ---
 class: inverse, top

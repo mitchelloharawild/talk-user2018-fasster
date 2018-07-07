@@ -36,6 +36,11 @@ a, a > code {
   font-weight: 600;
   display:inline-block;
 }
+.largecode {
+  font-size:50px;
+  font-family: monospace;
+  margin: 0;
+}
 
 .sticker-float img{
 	height: 200px;
