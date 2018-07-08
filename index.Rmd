@@ -126,10 +126,12 @@ class: center
 ---
 class: inverse, center, top
 
-background-image: url(resources/electricity.jpeg)
+background-image: url(resources/electricity.jpg)
 background-size: cover
 
+.animated.fadeIn.shadowText[
 # Electricity demand
+]
 
 ---
 
@@ -158,6 +160,7 @@ tsibbledata::elecdemand %>%
 # Electricity demand
 ```{r elecPlot, cache = TRUE}
 tsibbledata::elecdemand %>% 
+  rename(Time = index) %>%
   autoplot(Demand) + 
   ylab("Electricity Demand (GW)")
 ```
@@ -242,12 +245,16 @@ class: inverse
 ]
 
 <br>
+
 --
 
 ### With support for:
+
 * ### Missing values
 * ### Exogenous regressors
+
 ---
+
 
 .sticker-float[![fable](resources/fable.svg)]
 
@@ -267,7 +274,7 @@ This allows fasster models to work with other features from the fable package.
 Uses formula based model specification:
 
 .panel.panel-default[.panel-body.largecode[
-t(y) ~ specials
+t(y) ~ *\{specials\}*
 ]]
 
 ---
@@ -290,26 +297,52 @@ tribble(
 ```
 
 ---
-class: inverse
 
-.sticker-float[![fasster](resources/fasster.png)]
 # Modelling with fasster
 
----
-
-# Modelling electricity demand
-
-```{r electr, echo = TRUE, cache = TRUE}
-elec_tr <- tsibbledata::elecdemand %>%
-  filter(index < ymd("2014-03-01"))
-elec_tr
+```{r elecPlot2, cache = TRUE}
+tsibbledata::elecdemand %>%  
+  rename(Time = index) %>%
+  autoplot(Demand) + 
+  ylab("Electricity Demand (GW)")
 ```
 
 ---
 
-# %S%: State switching
+# Modelling with fasster
+
+```{r electr, echo = TRUE, cache = TRUE}
+elec_tr <- tsibbledata::elecdemand %>%
+  filter(index < ymd("2014-03-01"))
+```
+```{r electr-print}
+elec_tr
+```
+
+
+---
+
+# Capturing seasonality
 ```{r, echo = TRUE, eval = FALSE}
-y ~ DayType %S% (poly(1) + trig(48, 14))
+y ~ poly(1) + trig(48, 16)
+```
+
+
+```{r noswitching, cache = TRUE}
+tsibbledata::elecdemand %>% 
+  filter(month(index) == 6) %>%
+  ggplot(aes(x=index, y = Demand)) +
+  geom_line() + 
+  xlab("Time [30 MINUTES]") + 
+  ylab("Electricity Demand (GW)")
+```
+
+
+---
+
+# Capturing seasonality
+```{r, echo = TRUE, eval = FALSE}
+y ~ DayType %S% (poly(1) + trig(48, 16))
 ```
 
 
@@ -324,15 +357,19 @@ tsibbledata::elecdemand %>%
   ggplot(aes(x=index, y = Demand, colour = `Day Type`)) +
   geom_line() + 
   xlab("Time [30 MINUTES]") + 
-  ylab("Electricity Demand (GW)") + 
-  theme(legend.position = "bottom")
+  ylab("Electricity Demand (GW)")
 ```
 
 ---
 
-# Modelling electricity demand
+# Using temperature information
 
-```{r}
+```{r, echo = TRUE, eval = FALSE}
+y ~ Temperature + Temperature^2
+# (huge simplification of the non-linear relationship)
+```
+
+```{r fig.height=5}
 elec_tr %>%
   gather("Series", "Value", Demand, Temperature) %>%
   ggplot(aes(x=index, y=Value, group=Series)) +
@@ -343,16 +380,24 @@ elec_tr %>%
   ggtitle("Electricity demanded and temperature")
 ```
 
+* Strongly related non-linear relationship.
+* Takes care of most annual seasonality.
 
 ---
 
+# Estimating the model
+
 ```{r, elecfit, echo = TRUE, cache = TRUE}
 elec_fit <- elec_tr %>%
-  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + 
-                        Temperature + Temperature^2)
-elec_fit
+  fasster(
+    log(Demand) ~ 
+      WorkDay %S% (trig(48, 16) + poly(1)) + 
+      Temperature + Temperature^2
+  )
 ```
 
+* A log transformation is taken to normalise the variance.
+* Specials are combined additively.
 
 ---
 
@@ -379,16 +424,38 @@ fit_comp %>%
 
 ---
 
-# Forecasts (Electricity demand)
+# Forecasts
 
-```{r elecfc, cache = TRUE}
+```{r}
 elec_ts <- tsibbledata::elecdemand %>%
-  tsibble::filter(index >= ymd("2014-03-01")) %>%
-  head(48*7*3)
+  tsibble::filter(
+    index >= ymd("2014-03-01"),
+    index < ymd("2014-04-01"))
+```
+```{r, echo = TRUE, eval = FALSE}
+elec_ts
+```
+```{r}
+elec_ts %>%
+  select(-Demand)
+```
 
+
+---
+
+# Forecasts
+
+```{r elecfc, cache = TRUE, echo = TRUE}
 elec_fc <- elec_fit %>% 
   forecast(newdata = elec_ts) 
 
+elec_fc %>%
+  autoplot()
+```
+
+---
+# Forecasts
+```{r}
 elec_fc %>%
   autoplot(level = NULL) + 
   geom_line(aes(x=index, y=Demand), data=elec_ts)
@@ -399,14 +466,42 @@ elec_fc %>%
 
 # Interpolation
 
-Insert missing value plots here, filled with fasster modelled fits
-Visually compare with actual values
+```{r elecmissing}
+elecdemand_missing <- elec_tr
+elecdemand_missing$Demand[elecdemand_missing$index >= ymd("2014-02-01") &
+                          elecdemand_missing$index <  ymd("2014-02-14")] <- NA
+
+elecdemand_missing %>%  
+  rename(Time = index) %>%
+  autoplot(Demand) + 
+  ylab("Electricity Demand (GW)")
+```
+
+---
+
+# Interpolation
+
+```{r interpolated}
+elecdemand_missing %>%
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + 
+                        Temperature + Temperature^2) %>%
+  interpolate %>%
+  autoplot(Demand)
+```
+
+
+---
+
+# Interpolation
+
+```{r interpolated-actual}
+elec_tr %>%
+  autoplot(Demand)
+```
 
 ---
 
 # Streaming data
-
-Mention that new data can come in without refitting the model
 
 ```{r stream_data}
 elec_tr %>% 
@@ -419,7 +514,8 @@ elec_tr %>%
 elec_fit %>%
   stream(head(elec_ts, 48*7)) %>%
   forecast(tail(elec_ts, -48*7)) %>%
-  autoplot(level = NULL)
+  autoplot + 
+  ylab("Electricity Demand (GW)")
 ```
 
 
@@ -428,10 +524,23 @@ class: inverse, top
 
 .sticker-float[![fasster](resources/fasster.png)]
 <br>
-.center[
-# The fasster package
+
+# A fasster summary
+<br>
+
+Features:
+.pull-left[
+* Component extraction
+* Forecasting
+]
+.pull-right[
+* Interpolation
+* Streaming
 ]
 
+<br>
+
+--
 
 <table class="table">
   <thead>
@@ -447,7 +556,7 @@ class: inverse, top
   </thead>
   <tbody>
     <tr>
-      <td>State&nbspSpace</td>
+      <td>BATS/TBATS</td>
       <td class="danger">No</td>
       <td class="danger">Slow</td>
       <td class="danger">No</td>
@@ -456,31 +565,40 @@ class: inverse, top
       <td class="success">Yes</td>
     </tr>
     <tr>
-      <td>Regression</td>
-      <td class="success">Yes</td>
-      <td class="success">Fast</td>
-      <td class="success">Yes</td>
+      <td>Prophet</td>
       <td class="warning">Okay</td>
-      <td class="danger">No</td>
+      <td class="warning">Okay</td>
+      <td class="success">Yes</td>
+      <td class="success">Good</td>
+      <td class="success">Yes</td>
       <td class="danger">No</td>
     </tr>
     <tr>
       <td>fasster</td>
-      <td class="success">No</td>
-      <td class="warning">Okay*</td>
-      <td class="success">No</td>
+      <td class="success">Yes</td>
       <td class="warning">Okay</td>
+      <td class="success">Yes</td>
+      <td class="success">Good</td>
       <td class="success">Yes</td>
       <td class="success">Yes</td>
     </tr>
   </tbody>
 </table>
 
-.footnote[[*] Much faster than state space models, similar speed to prophet]
+---
 
-The **development** version can be installed from GitHub using:
+class: inverse, top
 
-```{r, echo = TRUE, eval = FALSE}
-# install.packages("devtools")
-devtools::install_github("mitchelloharawild/fasster")
-```
+.sticker-float[![fasster](resources/fasster.png)]
+<br>
+
+# Try for yourself:
+
+Learn more about fasster on GitHub:
+`r fa("github", fill = "white")` [tidyverts/fasster](https://github.com/tidyverts/fasster)
+
+Keep updated: 
+`r fa("globe", fill = "white")` [tidyverts.org](http://www.tidyverts.org)
+
+Review slides:
+`r fa("desktop", fill = "white")` [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)

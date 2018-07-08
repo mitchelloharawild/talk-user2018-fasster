@@ -36,8 +36,8 @@ a, a > code {
   font-weight: 600;
   display:inline-block;
 }
-.largecode {
-  font-size:50px;
+.largecode p{
+  font-size:30px;
   font-family: monospace;
   margin: 0;
 }
@@ -60,6 +60,10 @@ p, li {
   bottom: 3em;
   padding-right: 4em;
   font-size: 90%;
+}
+
+.shadowText {
+  text-shadow: 0 0 20px #333;
 }
 
 .center {
