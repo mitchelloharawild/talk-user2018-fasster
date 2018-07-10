@@ -171,13 +171,13 @@ tsibbledata::elecdemand %>%
 ```{r, cache = TRUE}
 library(timevis)
 data <- data.frame(
-  id      = 1:7,
+  id      = 1:6,
   content = c("MSARIMA", "DSHW", "TBATS",
               "MLR", "GAM", "Prophet"),
   start   = c("1970", "2003", "2010",
-              "2000", "1990", "2017"),
+              "???", "1990", "2017"),
   group   = rep(c("ss", "reg"), each = 3),
-  end     = rep(NA, 7)
+  end     = rep(NA, 6)
 )
 
 grp <- data.frame(
@@ -216,7 +216,7 @@ timevis(data, grp, showZoom = FALSE, options = list(zoomable=FALSE, showCurrentT
       <td class="success">Fast</td>
       <td class="success">Yes</td>
       <td class="warning">Okay</td>
-      <td class="warningr">Depends</td>
+      <td class="warning">Depends</td>
       <td class="danger">No</td>
     </tr>
   </tbody>
