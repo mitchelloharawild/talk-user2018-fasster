@@ -399,7 +399,7 @@ elec_fit <- elec_tr %>%
   )
 ```
 
-* A log transformation is taken to normalise the variance.
+* A log transformation is taken to stabalise the variance.
 * Specials are combined additively.
 
 ---
