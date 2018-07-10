@@ -3,6 +3,7 @@ library(fasster)
 library(lubridate)
 library(tsibble)
 library(ggplot2)
+library(gganimate)
 
 anim_points <- c("month", "day", "30 minutes")
 
@@ -16,14 +17,15 @@ make_frame <- function(unit){
 plot_data <- anim_points %>%
   map_dfr(make_frame)
 
-plot_data %>% 
+p <- plot_data %>% 
   as_tibble %>%
   mutate(unit = factor(unit, levels = anim_points)) %>% 
-  ggplot(aes(x=Time, y=Demand)) + 
+  ggplot(aes(x=x, y=Demand)) + 
   geom_line() + 
   transition_states(unit, 8, 8, wrap = FALSE) + 
   ease_aes('cubic-out') + 
   view_follow(fixed_x = TRUE)
 
+animate(p, device = "png", width = 1000, height = 600)
 
-anim <- split_animation(by = frame_vars()$previous_state)
+frame_vars()
