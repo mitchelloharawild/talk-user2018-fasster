@@ -172,11 +172,11 @@ tsibbledata::elecdemand %>%
 library(timevis)
 data <- data.frame(
   id      = 1:7,
-  content = c("MSARIMA", "DSHW", "BATS/TBATS", "FASSTER",
+  content = c("MSARIMA", "DSHW", "TBATS",
               "MLR", "GAM", "Prophet"),
-  start   = c("2000", "2003", "2010", "2018",
-              "2000", "2000", "2017"),
-  group   = c("ss", rep(c("ss", "reg"), each = 3)),
+  start   = c("1970", "2003", "2010",
+              "2000", "1990", "2017"),
+  group   = rep(c("ss", "reg"), each = 3),
   end     = rep(NA, 7)
 )
 
