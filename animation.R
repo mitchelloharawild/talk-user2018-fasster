@@ -20,5 +20,5 @@ plot_data %>%
   ggplot(aes(x=Time, y=Demand)) + 
   geom_line() + 
   transition_states(unit, 5, 3) + 
-  ease_aes('elastic-in') + 
+  ease_aes('cubic-out') + 
   view_follow(fixed_x = TRUE)
