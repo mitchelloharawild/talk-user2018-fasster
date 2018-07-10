@@ -54,7 +54,7 @@ theme_set(
 .bottom[
 ### Mitchell O'Hara-Wild (`r fa("twitter", fill="#1da1f2")`[@mitchoharawild](https://twitter.com/mitchoharawild))
 <br>
-### July 13th 2018
+### 13 July 2018
 
 ### Slides @ [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
 ]
