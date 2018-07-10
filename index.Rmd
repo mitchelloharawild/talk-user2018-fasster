@@ -521,7 +521,7 @@ Features:
   </thead>
   <tbody>
     <tr>
-      <td>BATS/TBATS</td>
+      <td>TBATS</td>
       <td class="danger">No</td>
       <td class="danger">Slow</td>
       <td class="danger">No</td>
