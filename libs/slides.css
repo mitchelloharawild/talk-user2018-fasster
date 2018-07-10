@@ -121,14 +121,13 @@ p, li {
 }
 .pull-left {
   float: left;
-  width: 47%;
+  width: 50%;
+  margin-bottom:20px;
 }
 .pull-right {
   float: right;
-  width: 47%;
-}
-.pull-right ~ * {
-  clear: both;
+  width: 50%;
+  margin-bottom:20px;
 }
 
 .table{

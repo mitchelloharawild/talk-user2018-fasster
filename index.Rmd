@@ -250,11 +250,14 @@ class: inverse
 
 ### With support for:
 
+.pull-left[
 * ### Missing values
+]
+.pull-right[
 * ### Exogenous regressors
+]
 
 ---
-
 
 .sticker-float[![fable](resources/fable.svg)]
 
