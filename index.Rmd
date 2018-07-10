@@ -464,44 +464,6 @@ elec_fc %>%
   geom_line(aes(x=index, y=Demand), data=elec_ts)
 ```
 
-
----
-
-# Interpolation
-
-```{r elecmissing}
-elecdemand_missing <- elec_tr
-elecdemand_missing$Demand[elecdemand_missing$index >= ymd("2014-02-01") &
-                          elecdemand_missing$index <  ymd("2014-02-14")] <- NA
-
-elecdemand_missing %>%  
-  rename(Time = index) %>%
-  autoplot(Demand) + 
-  ylab("Electricity Demand (GW)")
-```
-
----
-
-# Interpolation
-
-```{r interpolated}
-elecdemand_missing %>%
-  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) + 
-                        Temperature + Temperature^2) %>%
-  interpolate %>%
-  autoplot(Demand)
-```
-
-
----
-
-# Interpolation
-
-```{r interpolated-actual}
-elec_tr %>%
-  autoplot(Demand)
-```
-
 ---
 
 # Streaming data
