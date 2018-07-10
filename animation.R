@@ -22,10 +22,12 @@ p <- plot_data %>%
   mutate(unit = factor(unit, levels = anim_points)) %>% 
   ggplot(aes(x=x, y=Demand)) + 
   geom_line() + 
+  xlab("Time") + ylab("Electiricty Demand (GW)") +
   transition_states(unit, 8, 8, wrap = FALSE) + 
   ease_aes('cubic-out') + 
   view_follow(fixed_x = TRUE)
 
 animate(p, device = "png", width = 1000, height = 600)
 
-frame_vars()
+frame_vars()$frame_source %>% dirname %>% unique %>% list.files
+
