@@ -42,7 +42,7 @@ gif2mp4 <- function(gif, path){
   magick::image_write(gif, tmp_gif)
   message("Converting gif to mp4...")
   system(paste0('ffmpeg -i ', tmp_gif, ' -y -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" ',
-                normalizePath(path)))
+                file.path(getwd(), normalizePath(path))))
   message("Done!")
 }
 mp4_vid <- function(src){
@@ -155,7 +155,7 @@ background-size: cover
 ---
 
 # Electricity demand
-```{r elecMonthly, cache = FALSE}
+```{r elecMonthly_gen, eval = FALSE}
 anim_points <- c("month", "day", "30 minutes")
 
 make_frame <- function(unit){
@@ -184,7 +184,8 @@ gif1_split <- split_animation(gif1, cut(gganimate::frame_vars(gif1)$frame, c(0, 
 
 gif1_split[[1]] %>% 
   gif2mp4("resources/anim1.mp4")
-
+```
+```{r elecMonthly}
 mp4_vid("resources/anim1.mp4")
 ```
 
@@ -193,26 +194,28 @@ mp4_vid("resources/anim1.mp4")
 ---
 
 # Electricity demand
-```{r elecDaily, cache = TRUE}
+```{r elecDaily_gen, eval = FALSE}
 gif1_split[[2]] %>% 
   gif2mp4("resources/anim2.mp4")
-
+```
+```{r elecDaily}
 mp4_vid("resources/anim2.mp4")
 ```
 
 ---
 
 # Electricity demand
-```{r elecPlot, cache = TRUE}
+```{r elecPlot_gen, eval = FALSE}
 gif1_split[[3]] %>% 
   gif2mp4("resources/anim3.mp4")
-
+```
+```{r elecPlot}
 mp4_vid("resources/anim3.mp4")
 ```
 ---
 
 # Electricity demand
-```{r elecPlot, cache = TRUE}
+```{r elecPlotZoom_gen, eval = FALSE}
 yrange <- c(tsibbledata::elecdemand %>%
   .$Demand %>% range,
   tsibbledata::elecdemand %>%
@@ -236,12 +239,13 @@ p2 <- tsibbledata::elecdemand %>%
                    c(1000, yrange[c(1,3)]),
                    c(1001, yrange[c(2,4)]),
                    wrap = FALSE)
-
 gif2 <- animate(p2, device = "png", width = 1000, height = 600)
 gif2_split <- split_animation(gif2, cut(gganimate::frame_vars(gif2)$frame, c(0, 31, 70, 100)))
 gif2_split[[2]] %>% 
   gif2mp4("resources/anim4.mp4")
+```
 
+```{r elecPlotZoom}
 mp4_vid("resources/anim4.mp4")
 ```
 ---
