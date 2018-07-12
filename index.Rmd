@@ -673,4 +673,4 @@ Keep updated:
 Review slides:
 `r fa("desktop", fill = "white")` [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
 
-This work is licensed as `r fa("creative-commons")` BY-NC 4.0.
+This work is licensed as `r fa("creative-commons", fill="white")` BY-NC 4.0.
