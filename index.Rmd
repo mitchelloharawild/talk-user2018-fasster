@@ -77,7 +77,7 @@ theme_set(
 <br>
 ### 13 July 2018
 
-### Slides @ [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
+### Slides @ [www.mitchelloharawild.com/useR18/](https://www.mitchelloharawild.com/useR18/)
 ]
 
 ---
@@ -744,7 +744,7 @@ class: inverse, top
 
 `r fa("chart-line", fill = "white")` Keep updated: [tidyverts.org](http://www.tidyverts.org)
 
-`r fa("desktop", fill = "white")` Review slides: [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
+`r fa("desktop", fill = "white")` Review slides: [www.mitchelloharawild.com/useR18/](https://www.mitchelloharawild.com/useR18/)
 
 <br>
 
