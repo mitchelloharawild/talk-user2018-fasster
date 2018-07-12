@@ -42,6 +42,10 @@ a, a > code {
   margin: 0;
 }
 
+.thesisplot img{
+  height: 400px;
+}
+
 .larger p {
   font-size: 36px;
 }

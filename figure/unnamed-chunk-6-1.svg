@@ -118,6 +118,6 @@
 <polyline points='43.25,234.94 47.23,234.94 ' style='stroke-width: 1.55; stroke: #333333; stroke-linecap: butt;' clip-path='url(#cpMHw4NjR8MzYwfDA=)' />
 <polyline points='43.25,196.17 47.23,196.17 ' style='stroke-width: 1.55; stroke: #333333; stroke-linecap: butt;' clip-path='url(#cpMHw4NjR8MzYwfDA=)' />
 <g clip-path='url(#cpMHw4NjR8MzYwfDA=)'><text x='422.37' y='349.39' style='font-size: 16.00px; font-family: Arimo;' textLength='33.80px' lengthAdjust='spacingAndGlyphs'>Date</text></g>
-<g clip-path='url(#cpMHw4NjR8MzYwfDA=)'><text transform='translate(18.98,269.10) rotate(-90)' style='font-size: 16.00px; font-family: Arimo;' textLength='191.16px' lengthAdjust='spacingAndGlyphs'>Electricity demanded (GW)</text></g>
+<g clip-path='url(#cpMHw4NjR8MzYwfDA=)'><text transform='translate(18.98,261.53) rotate(-90)' style='font-size: 16.00px; font-family: Arimo;' textLength='176.02px' lengthAdjust='spacingAndGlyphs'>Electricity Demand (GW)</text></g>
 <g clip-path='url(#cpMHw4NjR8MzYwfDA=)'><text x='47.23' y='21.18' style='font-size: 19.20px; font-family: Arimo;' textLength='324.44px' lengthAdjust='spacingAndGlyphs'>Electricity demanded and temperature</text></g>
 </svg>

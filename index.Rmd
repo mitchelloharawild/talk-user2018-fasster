@@ -467,7 +467,7 @@ elec_tr %>%
   ggplot(aes(x=index, y=Value, group=Series)) +
   geom_line() +
   facet_grid(Series ~ ., scales = "free_y") + 
-  ylab("Electricity demanded (GW)") + 
+  ylab("Electricity Demand (GW)") + 
   xlab("Date") + 
   ggtitle("Electricity demanded and temperature")
 ```
@@ -601,14 +601,15 @@ elec_misfit <- elecdemand_missing %>%
 ```
 
 ---
- 
+
 # Interpolation 
 ```{r interpolated}
 elecdemand_missing %>% 
   fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) +  
                         Temperature + Temperature^2) %>% 
   interpolate %>% 
-  autoplot(Demand) 
+  autoplot(Demand) +
+  ylab("Electricity Demand (GW)")
 ``` 
 ```{r, echo = TRUE, eval = FALSE}
 elec_misfit %>%
@@ -750,4 +751,29 @@ class: inverse, top
 This work is licensed as `r fa("creative-commons", fill="white")` BY-NC 4.0.
 ]
 
-<script src = "libs/slides.js"></script>
+---
+class: center
+
+## Corticosteroid drug sales
+.thesisplot[
+![](resources/thesisp1.png)
+]
+![](resources/thesist1.png)
+
+---
+class: center
+
+## Pedestrian counts
+.thesisplot[
+![](resources/thesisp2.png)
+]
+![](resources/thesist2.png)
+
+---
+class: center
+
+## Electricity demand
+.thesisplot[
+![](resources/thesisp3.png)
+]
+![](resources/thesist3.png)
