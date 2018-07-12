@@ -11,10 +11,11 @@ output:
     seal: false
     nature:
       highlightStyle: github
+      ratio: '16:9'
       highlightLines: true
       countIncrementalSlides: false
 ---
-class: inverse 
+class: inverse
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE,
