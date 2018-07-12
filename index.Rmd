@@ -34,7 +34,7 @@ library(gganimate)
 opts_chunk$set(
   echo = FALSE, warning = FALSE, message = FALSE, comment = "#>",
   fig.path = 'figure/', cache.path = 'cache/', fig.align = 'center', 
-  fig.width = 12, fig.show = 'hold', 
+  fig.width = 12, fig.show = 'hold',
   cache = TRUE, external = TRUE, dev = 'svglite', dev.args = list(bg = "transparent")
 )
 
@@ -68,6 +68,7 @@ theme_set(
 
 .title[fasster]
 .sticker-float[![fasster](resources/fasster.png)]
+.sticker-float[![fasster](resources/user2018.png)]
 
 ## Forecasting multiple seasonality with state switching
 
@@ -522,9 +523,11 @@ elec_ts <- tsibbledata::elecdemand %>%
     index >= ymd("2014-03-01"),
     index < ymd("2014-04-01"))
 ```
+
 ```{r, echo = TRUE, eval = FALSE}
 elec_ts
 ```
+
 ```{r}
 elec_ts %>%
   select(-Demand)
@@ -537,7 +540,7 @@ elec_ts %>%
 
 ```{r elecfc, cache = TRUE, echo = TRUE}
 elec_fc <- elec_fit %>% 
-  forecast(newdata = elec_ts) 
+  forecast(newdata = elec_ts)
 
 elec_fc %>%
   autoplot()
