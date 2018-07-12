@@ -14,6 +14,8 @@ gif2mp4 <- function(gif, path){
   message("Done!")
 }
 
+## Detail
+
 anim_points <- c("month", "day", "30 minutes")
 
 make_frame <- function(unit){
@@ -57,6 +59,8 @@ tsibbledata::elecdemand %>%
   transition_states(state, 8, 8, wrap = FALSE) + 
   ease_aes('cubic-out') + 
   view_follow(fixed_x = FALSE)
+
+## Zoom
   
 yrange <- c(tsibbledata::elecdemand %>%
   .$Demand %>% range,
@@ -85,3 +89,50 @@ p2 <- tsibbledata::elecdemand %>%
 gif2 <- animate(p2, device = "png", width = 1000, height = 600)
 gif2_split <- split_animation(gif2, cut(gganimate::frame_vars(gif2)$frame, c(0, 31, 70, 100)))
 gif2_split[[2]]
+
+## Stream
+elec_tr <- tsibbledata::elecdemand %>%
+  filter(index < ymd("2014-03-01"))
+
+elec_fit <- elec_tr %>%
+  fasster(
+    log(Demand) ~ 
+      WorkDay %S% (trig(48, 16) + poly(1)) + 
+      Temperature + I(Temperature^2)
+  )
+
+elec_ts <- tsibbledata::elecdemand %>%
+  tsibble::filter(
+    index >= ymd("2014-03-01"),
+    index < ymd("2014-04-01"))
+
+elec_fc <- elec_fit %>% 
+  forecast(newdata = elec_ts)
+
+elec_fc %>%
+  autoplot()
+
+elec_fc2 <- elec_fit %>%
+  stream(head(elec_ts, 48*7)) %>%
+  forecast(tail(elec_ts, -48*7))
+
+elec_fc2 %>% 
+  autoplot + 
+  ylab("Electricity Demand (GW)")
+###
+
+elec_fc$data[[1]] <- 
+elec_fc$forecast[[1]] <- rbind(elec_fc$forecast[[1]] %>% mutate(frame=1),
+                           elec_fc2$forecast[[1]] %>% mutate(frame=2))
+
+
+ts_data <- rbind(elec_fc$data[[1]] %>% mutate(frame=1),
+                 elec_fc2$data[[1]] %>% mutate(frame=2))
+fc_data <- rbind(fortify(elec_fc) %>% mutate(frame=1),
+                 fortify(elec_fc) %>% mutate(frame=1))
+
+autoplot(ts_data, Demand) + 
+  transition_states(frame, 8, 8, wrap = FALSE) + 
+  ease_aes('cubic-out') + 
+  view_follow(fixed_x = TRUE)
+
