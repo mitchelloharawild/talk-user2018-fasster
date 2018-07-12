@@ -22,7 +22,14 @@
     <textarea id="source">
 
 class: inverse
-
+&lt;script&gt;
+slideshow.on('beforeShowSlide', function (slide) {
+  $("video").each(function() {
+    $(this).get(0).currentTime = 0;
+    $(this).get(0).play();
+  });
+});
+&lt;/script&gt;
 
 
 .title[fasster]
@@ -488,6 +495,11 @@ elec_ts
  
 &lt;img src="figure/elecmissing-1.svg" style="display: block; margin: auto;" /&gt;
 
+```r
+elec_misfit &lt;- elecdemand_missing %&gt;% 
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) +  
+                        Temperature + Temperature^2)
+```
 
 ---
  
