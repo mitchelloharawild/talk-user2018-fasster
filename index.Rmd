@@ -378,9 +378,9 @@ tribble(
   "seas(s)", "Seasonal factors",
   "trig(s, q)", "Seasonal fourier terms",
   "ARMA(ar, ma)", "ARMA processes",
-  "%S%", "State switching",
   "xreg", "Exogenous regressors",
-  "custom()", "Custom dlm matrices"
+  "custom()", "Custom dlm matrices",
+  "%S%", "State switching"
 ) %>% 
   kable(format = "html") %>%
   kableExtra::kable_styling(font_size = 26)
@@ -414,7 +414,7 @@ elec_tr
 
 # Capturing seasonality
 ```{r, echo = TRUE, eval = FALSE}
-y ~ poly(1) + trig(48, 16)
+Demand ~ poly(1) + trig(48, 16)
 ```
 
 
@@ -432,7 +432,7 @@ tsibbledata::elecdemand %>%
 
 # Capturing seasonality
 ```{r, echo = TRUE, eval = FALSE}
-y ~ DayType %S% (poly(1) + trig(48, 16))
+Demand ~ DayType %S% (poly(1) + trig(48, 16))
 ```
 
 
@@ -455,7 +455,7 @@ tsibbledata::elecdemand %>%
 # Using temperature information
 
 ```{r, echo = TRUE, eval = FALSE}
-y ~ Temperature + I(Temperature^2)
+Demand ~ Temperature + I(Temperature^2)
 # (huge simplification of the non-linear relationship)
 ```
 
@@ -476,6 +476,7 @@ elec_tr %>%
 ---
 
 # Estimating the model
+<br>
 
 ```{r, elecfit, echo = TRUE, cache = TRUE}
 elec_fit <- elec_tr %>%
@@ -485,6 +486,12 @@ elec_fit <- elec_tr %>%
       Temperature + I(Temperature^2)
   )
 ```
+
+```{r elecfitout, echo = FALSE}
+elec_fit
+```
+
+<br>
 
 * A log transformation is taken to stabalise the variance.
 * Specials are combined additively.
@@ -523,24 +530,31 @@ elec_ts <- tsibbledata::elecdemand %>%
     index < ymd("2014-04-01"))
 ```
 
+```{r elecfc, cache = TRUE, echo = TRUE}
+elec_fc <- elec_fit %>% 
+  forecast(newdata = elec_ts)
+```
+```{r elecfcout, echo = FALSE}
+elec_fc
+```
+
+--
+
 ```{r, echo = TRUE, eval = FALSE}
 elec_ts
 ```
 
 ```{r}
 elec_ts %>%
-  select(-Demand)
+  select(-Demand) %>%
+  print(n=6)
 ```
-
 
 ---
 
 # Forecasts
 
-```{r elecfc, cache = TRUE, echo = TRUE}
-elec_fc <- elec_fit %>% 
-  forecast(newdata = elec_ts)
-
+```{r elecfcplot}
 elec_fc %>%
   autoplot()
 ```
