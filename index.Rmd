@@ -14,6 +14,7 @@ output:
       ratio: '4:3'
       highlightLines: true
       countIncrementalSlides: false
+      beforeInit: "libs/slides.js"
 ---
 class: inverse
 
@@ -555,48 +556,111 @@ elec_ts %>%
 
 # Forecasts
 
-```{r elecfcplot, echo = TRUE}
+```{r elecfcplot, echo = FALSE}
 elec_fc %>%
-  autoplot(level = NULL)
+  autoplot(level = NULL) +
+  ylab("Electricity Demand (GW)")
 ```
 
 ---
 
 # Forecasts
-
-```{r elecfcplotint, echo = TRUE}
+```{r elecfcplotint, echo = FALSE}
 autoplot(tail(elec_tr, 48*7*2)) + 
-  autolayer(elec_fc)
+  autolayer(elec_fc) +
+  ylab("Electricity Demand (GW)")
+```
+---
+
+# Forecasts
+```{r elecfcplotintactual, echo = FALSE}
+autoplot(tail(elec_tr, 48*7*2)) + 
+  autolayer(elec_fc) + 
+  geom_line(aes(x=index, y=Demand), data=elec_ts) +
+  ylab("Electricity Demand (GW)")
+```
+
+---
+ 
+# Interpolation 
+ 
+```{r elecmissing} 
+elecdemand_missing <- elec_tr 
+elecdemand_missing$Demand[elecdemand_missing$index >= ymd("2014-02-01") & 
+                          elecdemand_missing$index <  ymd("2014-02-14")] <- NA 
+ 
+elecdemand_missing %>%   
+  rename(Time = index) %>% 
+  autoplot(Demand) +  
+  ylab("Electricity Demand (GW)") 
+``` 
+```{r}
+elec_misfit <- elecdemand_missing %>% 
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) +  
+                        Temperature + Temperature^2)
+```
+
+---
+ 
+# Interpolation 
+```{r interpolated}
+elecdemand_missing %>% 
+  fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) +  
+                        Temperature + Temperature^2) %>% 
+  interpolate %>% 
+  autoplot(Demand) 
+``` 
+```{r, echo = TRUE, eval = FALSE}
+elec_misfit %>%
+  interpolate
 ```
 
 
 ---
-# Forecasts
-```{r}
-elec_fc %>%
-  autoplot(level = NULL) + 
-  geom_line(aes(x=index, y=Demand), data=elec_ts)
+
+# Streaming data
+
+```{r stream_data_blank}
+elec_tr %>% 
+  autoplot(Demand) + 
+  xlim(c(min(elec_tr$index), max(tail(elec_ts, -48*7)$index))) +
+  ylab("Electricity Demand (GW)")
 ```
 
 ---
 
 # Streaming data
 
-```{r stream_data}
+```{r stream_data_new}
 elec_tr %>% 
   autoplot(Demand) + 
-  geom_line(aes(x = index, y = Demand, colour = "New streaming data"), data = head(elec_ts, 48*7))
-```
----
-
-```{r stream_fc, echo = TRUE}
-elec_fit %>%
-  stream(head(elec_ts, 48*7)) %>%
-  forecast(tail(elec_ts, -48*7)) %>%
-  autoplot + 
+  geom_line(aes(x = index, y = Demand), data = head(elec_ts, 48*7), colour = "#1b9e77") + 
+  xlim(c(min(elec_tr$index), max(tail(elec_ts, -48*7)$index))) +
   ylab("Electricity Demand (GW)")
 ```
 
+```{r echo = TRUE, eval = FALSE}
+elec_stream
+```
+
+---
+
+# Streaming data
+
+```{r stream_fc}
+elec_fit %>%
+  stream(head(elec_ts, 48*7)) %>%
+  forecast(tail(elec_ts, -48*7)) %>%
+  autoplot(level = NULL) + 
+  ylab("Electricity Demand (GW)") + 
+  xlim(c(min(elec_tr$index), max(tail(elec_ts, -48*7)$index)))
+```
+
+```{r echo = TRUE, eval = FALSE}
+elec_fit %>%
+  stream(elec_stream) %>%
+  forecast(newdata = elec_stream_future)
+```
 
 ---
 class: inverse, top
@@ -605,6 +669,7 @@ class: inverse, top
 
 .title[Summary]
 
+.larger[
 Features:
 .pull-left[
 * Component extraction
@@ -613,6 +678,7 @@ Features:
 .pull-right[
 * Interpolation
 * Streaming
+]
 ]
 
 <br>

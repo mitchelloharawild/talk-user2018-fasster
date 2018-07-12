@@ -471,49 +471,64 @@ elec_ts
 
 # Forecasts
 
-
-```r
-elec_fc %&gt;%
-  autoplot(level = NULL)
-```
-
 &lt;img src="figure/elecfcplot-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
 # Forecasts
-
-
-```r
-autoplot(tail(elec_tr, 48*7*2)) + 
-  autolayer(elec_fc)
-```
-
 &lt;img src="figure/elecfcplotint-1.svg" style="display: block; margin: auto;" /&gt;
+---
+
+# Forecasts
+&lt;img src="figure/elecfcplotintactual-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+ 
+# Interpolation 
+ 
+&lt;img src="figure/elecmissing-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ---
-# Forecasts
-&lt;img src="figure/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
+ 
+# Interpolation 
+&lt;img src="figure/interpolated-1.svg" style="display: block; margin: auto;" /&gt;
+
+```r
+elec_misfit %&gt;%
+  interpolate
+```
+
 
 ---
 
 # Streaming data
 
-&lt;img src="figure/stream_data-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="figure/stream_data_blank-1.svg" style="display: block; margin: auto;" /&gt;
+
 ---
+
+# Streaming data
+
+&lt;img src="figure/stream_data_new-1.svg" style="display: block; margin: auto;" /&gt;
+
+
+```r
+elec_stream
+```
+
+---
+
+# Streaming data
+
+&lt;img src="figure/stream_fc-1.svg" style="display: block; margin: auto;" /&gt;
 
 
 ```r
 elec_fit %&gt;%
-  stream(head(elec_ts, 48*7)) %&gt;%
-  forecast(tail(elec_ts, -48*7)) %&gt;%
-  autoplot + 
-  ylab("Electricity Demand (GW)")
+  stream(elec_stream) %&gt;%
+  forecast(newdata = elec_stream_future)
 ```
-
-&lt;img src="figure/stream_fc-1.svg" style="display: block; margin: auto;" /&gt;
-
 
 ---
 class: inverse, top
@@ -522,6 +537,7 @@ class: inverse, top
 
 .title[Summary]
 
+.larger[
 Features:
 .pull-left[
 * Component extraction
@@ -530,6 +546,7 @@ Features:
 .pull-right[
 * Interpolation
 * Streaming
+]
 ]
 
 &lt;br&gt;
@@ -604,6 +621,7 @@ This work is licensed as &lt;svg style="height:0.8em;top:.04em;position:relative
 &lt;script src = "libs/slides.js"&gt;&lt;/script&gt;
     </textarea>
 <script src="libs/remark-latest.min.js"></script>
+<script src="libs/slides.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
 "ratio": "4:3",
