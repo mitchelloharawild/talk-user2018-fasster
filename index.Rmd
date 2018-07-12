@@ -456,7 +456,7 @@ tsibbledata::elecdemand %>%
 # Using temperature information
 
 ```{r, echo = TRUE, eval = FALSE}
-y ~ Temperature + Temperature^2
+y ~ Temperature + I(Temperature^2)
 # (huge simplification of the non-linear relationship)
 ```
 
@@ -483,7 +483,7 @@ elec_fit <- elec_tr %>%
   fasster(
     log(Demand) ~ 
       WorkDay %S% (trig(48, 16) + poly(1)) + 
-      Temperature + Temperature^2
+      Temperature + I(Temperature^2)
   )
 ```
 
