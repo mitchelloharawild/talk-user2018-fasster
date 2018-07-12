@@ -216,7 +216,7 @@ mp4_vid("resources/anim3.mp4")
 ```
 ---
 
-# Electricity demand
+# Electricity demand (Half-hourly)
 ```{r elecPlotZoom_gen, eval = FALSE}
 yrange <- c(tsibbledata::elecdemand %>%
   .$Demand %>% range,
