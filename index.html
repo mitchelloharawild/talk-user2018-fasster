@@ -21,7 +21,7 @@
   <body>
     <textarea id="source">
 
-class: inverse 
+class: inverse
 
 
 
@@ -33,7 +33,7 @@ class: inverse
 .bottom[
 ### Mitchell O'Hara-Wild (&lt;svg style="height:0.8em;top:.04em;position:relative;fill:#1da1f2;" viewBox="0 0 512 512"&gt;&lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/&gt;&lt;/svg&gt;[@mitchoharawild](https://twitter.com/mitchoharawild))
 &lt;br&gt;
-### July 13th 2018
+### 13 July 2018
 
 ### Slides @ [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
 ]
@@ -114,29 +114,50 @@ background-size: cover
 
 ---
 
-# Electricity demand
-&lt;img src="figure/elecMonthly-1.svg" style="display: block; margin: auto;" /&gt;
+# Electricity demand (Monthly)
+
+<video autoplay>
+        <source src="resources/anim1.mp4" type="video/mp4">
+      </video>
+
+
 
 ---
 
-# Electricity demand
-&lt;img src="figure/elecDaily-1.svg" style="display: block; margin: auto;" /&gt;
+# Electricity demand (Daily)
+
+<video autoplay>
+        <source src="resources/anim2.mp4" type="video/mp4">
+      </video>
 
 ---
 
-# Electricity demand
-&lt;img src="figure/elecPlot-1.svg" style="display: block; margin: auto;" /&gt;
+# Electricity demand (Half-hourly)
+
+<video autoplay>
+        <source src="resources/anim3.mp4" type="video/mp4">
+      </video>
 ---
+
+# Electricity demand
+
+
+<video autoplay>
+        <source src="resources/anim4.mp4" type="video/mp4">
+      </video>
+---
+
+
 
 
 # Models for multiple seasonality
-<div id="htmlwidget-12277bf35dc820d3ea64" class="timevis html-widget" style="width:100%;height:250px;">
+<div id="htmlwidget-e2ce1de1c220b130329d" class="timevis html-widget" style="width:100%;height:250px;">
 <div class="btn-group zoom-menu">
 <button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
 <button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
 </div>
 </div>
-<script type="application/json" data-for="htmlwidget-12277bf35dc820d3ea64">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"2000","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"BATS/TBATS","start":"2010","group":"ss"},{"id":"4","content":"FASSTER","start":"2018","group":"ss"},{"id":"5","content":"MLR","start":"2000","group":"reg"},{"id":"6","content":"GAM","start":"2000","group":"reg"},{"id":"7","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false,"showCurrentTime":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-e2ce1de1c220b130329d">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"1970","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"TBATS","start":"2010","group":"ss"},{"id":"4","content":"MLR","start":"???","group":"reg"},{"id":"5","content":"GAM","start":"1990","group":"reg"},{"id":"6","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false,"showCurrentTime":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
 
 &lt;table class="table"&gt;
   &lt;thead&gt;
@@ -155,7 +176,7 @@ background-size: cover
       &lt;td&gt;State&amp;nbspSpace&lt;/td&gt;
       &lt;td class="danger"&gt;No&lt;/td&gt;
       &lt;td class="danger"&gt;Slow&lt;/td&gt;
-      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="warning"&gt;Depends&lt;/td&gt;
       &lt;td class="warning"&gt;Okay&lt;/td&gt;
       &lt;td class="success"&gt;Yes&lt;/td&gt;
       &lt;td class="success"&gt;Yes&lt;/td&gt;
@@ -166,7 +187,7 @@ background-size: cover
       &lt;td class="success"&gt;Fast&lt;/td&gt;
       &lt;td class="success"&gt;Yes&lt;/td&gt;
       &lt;td class="warning"&gt;Okay&lt;/td&gt;
-      &lt;td class="danger"&gt;No&lt;/td&gt;
+      &lt;td class="warning"&gt;Depends&lt;/td&gt;
       &lt;td class="danger"&gt;No&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
@@ -200,11 +221,14 @@ class: inverse
 
 ### With support for:
 
+.pull-left[
 * ### Missing values
+]
+.pull-right[
 * ### Exogenous regressors
+]
 
 ---
-
 
 .sticker-float[![fable](resources/fable.svg)]
 
@@ -256,16 +280,16 @@ t(y) ~ *\{specials\}*
    &lt;td style="text-align:left;"&gt; ARMA processes &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td style="text-align:left;"&gt; %S% &lt;/td&gt;
-   &lt;td style="text-align:left;"&gt; State switching &lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; xreg &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Exogenous regressors &lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td style="text-align:left;"&gt; custom() &lt;/td&gt;
    &lt;td style="text-align:left;"&gt; Custom dlm matrices &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; %S% &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; State switching &lt;/td&gt;
   &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
@@ -309,7 +333,7 @@ elec_tr &lt;- tsibbledata::elecdemand %&gt;%
 # Capturing seasonality
 
 ```r
-y ~ poly(1) + trig(48, 16)
+Demand ~ poly(1) + trig(48, 16)
 ```
 
 
@@ -321,7 +345,7 @@ y ~ poly(1) + trig(48, 16)
 # Capturing seasonality
 
 ```r
-y ~ DayType %S% (poly(1) + trig(48, 16))
+Demand ~ DayType %S% (poly(1) + trig(48, 16))
 ```
 
 
@@ -333,7 +357,7 @@ y ~ DayType %S% (poly(1) + trig(48, 16))
 
 
 ```r
-y ~ Temperature + Temperature^2
+Demand ~ Temperature + I(Temperature^2)
 # (huge simplification of the non-linear relationship)
 ```
 
@@ -352,11 +376,21 @@ elec_fit &lt;- elec_tr %&gt;%
   fasster(
     log(Demand) ~ 
       WorkDay %S% (trig(48, 16) + poly(1)) + 
-      Temperature + Temperature^2
+      Temperature + I(Temperature^2)
   )
 ```
 
-* A log transformation is taken to normalise the variance.
+
+```
+#&gt; # A mable: 1 model [30MINUTE]
+#&gt;   data                  model  
+#&gt;   &lt;list&gt;                &lt;model&gt;
+#&gt; 1 &lt;tsibble [2,832 × 4]&gt; FASSTER
+```
+
+&lt;br&gt;
+
+* A log transformation is taken to stabalise the variance.
 * Specials are combined additively.
 
 ---
@@ -370,18 +404,18 @@ components(elec_fit)
 
 ```
 #&gt; # A tsibble: 2,832 x 7 [30MINUTE]
-#&gt;    index               Temperature `Temperature^2` `WorkDay_0/poly(… `WorkDay_0/trig(…
-#&gt;    &lt;dttm&gt;                    &lt;dbl&gt;           &lt;dbl&gt;             &lt;dbl&gt;             &lt;dbl&gt;
-#&gt;  1 2014-01-01 00:00:00     -0.0189        0.000512              1.55          -0.00826
-#&gt;  2 2014-01-01 00:30:00     -0.0189        0.000512              1.55          -0.0826 
-#&gt;  3 2014-01-01 01:00:00     -0.0189        0.000512              1.55          -0.118  
-#&gt;  4 2014-01-01 01:30:00     -0.0189        0.000512              1.55          -0.167  
-#&gt;  5 2014-01-01 02:00:00     -0.0188        0.000510              1.55          -0.198  
-#&gt;  6 2014-01-01 02:30:00     -0.0186        0.000509              1.54          -0.227  
-#&gt;  7 2014-01-01 03:00:00     -0.0187        0.000510              1.54          -0.244  
-#&gt;  8 2014-01-01 03:30:00     -0.0187        0.000509              1.53          -0.249  
-#&gt;  9 2014-01-01 04:00:00     -0.0195        0.000521              1.54          -0.250  
-#&gt; 10 2014-01-01 04:30:00     -0.0184        0.000505              1.52          -0.232  
+#&gt;    index               `I(Temperature^2… Temperature `WorkDay_0/poly… `WorkDay_0/trig…
+#&gt;    &lt;dttm&gt;                          &lt;dbl&gt;       &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+#&gt;  1 2014-01-01 00:00:00          0.000512     -0.0189             1.55         -0.00826
+#&gt;  2 2014-01-01 00:30:00          0.000512     -0.0189             1.55         -0.0826 
+#&gt;  3 2014-01-01 01:00:00          0.000512     -0.0189             1.55         -0.118  
+#&gt;  4 2014-01-01 01:30:00          0.000512     -0.0189             1.55         -0.167  
+#&gt;  5 2014-01-01 02:00:00          0.000510     -0.0188             1.55         -0.198  
+#&gt;  6 2014-01-01 02:30:00          0.000509     -0.0186             1.54         -0.227  
+#&gt;  7 2014-01-01 03:00:00          0.000510     -0.0187             1.54         -0.244  
+#&gt;  8 2014-01-01 03:30:00          0.000509     -0.0187             1.53         -0.249  
+#&gt;  9 2014-01-01 04:00:00          0.000521     -0.0195             1.54         -0.250  
+#&gt; 10 2014-01-01 04:30:00          0.000505     -0.0184             1.52         -0.232  
 #&gt; # ... with 2,822 more rows, and 2 more variables: `WorkDay_1/poly(1)` &lt;dbl&gt;,
 #&gt; #   `WorkDay_1/trig(48, 16)` &lt;dbl&gt;
 ```
@@ -399,27 +433,39 @@ components(elec_fit)
 
 
 
+
+```r
+elec_fc &lt;- elec_fit %&gt;% 
+  forecast(newdata = elec_ts)
+```
+
+```
+#&gt; # A fable: 1 forecast [30MINUTE]
+#&gt;   data                  model   forecast     
+#&gt;   &lt;list&gt;                &lt;model&gt; &lt;fc&gt;         
+#&gt; 1 &lt;tsibble [2,832 × 4]&gt; FASSTER ~t(N) [h=624]
+```
+
+--
+
+
 ```r
 elec_ts
 ```
 
-```
-#&gt; # A tsibble: 1,488 x 3 [30MINUTE]
-#&gt;    index               WorkDay Temperature
-#&gt;    &lt;dttm&gt;                &lt;dbl&gt;       &lt;dbl&gt;
-#&gt;  1 2014-03-01 00:00:00       0        16.9
-#&gt;  2 2014-03-01 00:30:00       0        16.5
-#&gt;  3 2014-03-01 01:00:00       0        16.3
-#&gt;  4 2014-03-01 01:30:00       0        16.4
-#&gt;  5 2014-03-01 02:00:00       0        16.3
-#&gt;  6 2014-03-01 02:30:00       0        16.3
-#&gt;  7 2014-03-01 03:00:00       0        16.3
-#&gt;  8 2014-03-01 03:30:00       0        16.1
-#&gt;  9 2014-03-01 04:00:00       0        16  
-#&gt; 10 2014-03-01 04:30:00       0        15.9
-#&gt; # ... with 1,478 more rows
-```
 
+```
+#&gt; # A tsibble: 624 x 3 [30MINUTE]
+#&gt;   index               WorkDay Temperature
+#&gt;   &lt;dttm&gt;                &lt;dbl&gt;       &lt;dbl&gt;
+#&gt; 1 2014-03-01 00:00:00       0        16.9
+#&gt; 2 2014-03-01 00:30:00       0        16.5
+#&gt; 3 2014-03-01 01:00:00       0        16.3
+#&gt; 4 2014-03-01 01:30:00       0        16.4
+#&gt; 5 2014-03-01 02:00:00       0        16.3
+#&gt; 6 2014-03-01 02:30:00       0        16.3
+#&gt; # ... with 618 more rows
+```
 
 ---
 
@@ -427,38 +473,28 @@ elec_ts
 
 
 ```r
-elec_fc &lt;- elec_fit %&gt;% 
-  forecast(newdata = elec_ts) 
-
 elec_fc %&gt;%
-  autoplot()
+  autoplot(level = NULL)
 ```
 
-&lt;img src="figure/elecfc-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="figure/elecfcplot-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Forecasts
+
+
+```r
+autoplot(tail(elec_tr, 48*7*2)) + 
+  autolayer(elec_fc)
+```
+
+&lt;img src="figure/elecfcplotint-1.svg" style="display: block; margin: auto;" /&gt;
+
 
 ---
 # Forecasts
 &lt;img src="figure/unnamed-chunk-10-1.svg" style="display: block; margin: auto;" /&gt;
-
-
----
-
-# Interpolation
-
-&lt;img src="figure/elecmissing-1.svg" style="display: block; margin: auto;" /&gt;
-
----
-
-# Interpolation
-
-&lt;img src="figure/interpolated-1.svg" style="display: block; margin: auto;" /&gt;
-
-
----
-
-# Interpolation
-
-&lt;img src="figure/interpolated-actual-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -483,10 +519,8 @@ elec_fit %&gt;%
 class: inverse, top
 
 .sticker-float[![fasster](resources/fasster.png)]
-&lt;br&gt;
 
-# A fasster summary
-&lt;br&gt;
+.title[Summary]
 
 Features:
 .pull-left[
@@ -516,7 +550,7 @@ Features:
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;td&gt;BATS/TBATS&lt;/td&gt;
+      &lt;td&gt;TBATS&lt;/td&gt;
       &lt;td class="danger"&gt;No&lt;/td&gt;
       &lt;td class="danger"&gt;Slow&lt;/td&gt;
       &lt;td class="danger"&gt;No&lt;/td&gt;
@@ -550,22 +584,29 @@ Features:
 class: inverse, top
 
 .sticker-float[![fasster](resources/fasster.png)]
+
+.title[Thanks! &lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 576 512"&gt;&lt;path d="M416 192c0-88.4-93.1-160-208-160S0 103.6 0 192c0 34.3 14.1 65.9 38 92-13.4 30.2-35.5 54.2-35.8 54.5-2.2 2.3-2.8 5.7-1.5 8.7S4.8 352 8 352c36.6 0 66.9-12.3 88.7-25 32.2 15.7 70.3 25 111.3 25 114.9 0 208-71.6 208-160zm122 220c23.9-26 38-57.7 38-92 0-66.9-53.5-124.2-129.3-148.1.9 6.6 1.3 13.3 1.3 20.1 0 105.9-107.7 192-240 192-10.8 0-21.3-.8-31.7-1.9C207.8 439.6 281.8 480 368 480c41 0 79.1-9.2 111.3-25 21.8 12.7 52.1 25 88.7 25 3.2 0 6.1-1.9 7.3-4.8 1.3-2.9.7-6.3-1.5-8.7-.3-.3-22.4-24.2-35.8-54.5z"/&gt;&lt;/svg&gt;]
+
 &lt;br&gt;
 
-# Try for yourself:
+.larger[
+&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 496 512"&gt;&lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/&gt;&lt;/svg&gt; Learn more on GitHub: [tidyverts/fasster](https://github.com/tidyverts/fasster)
 
-Learn more about fasster on GitHub:
-&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 496 512"&gt;&lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/&gt;&lt;/svg&gt; [tidyverts/fasster](https://github.com/tidyverts/fasster)
+&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 512 512"&gt;&lt;path d="M500 384c6.6 0 12 5.4 12 12v40c0 6.6-5.4 12-12 12H12c-6.6 0-12-5.4-12-12V76c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v308h436zM456 96H344c-21.4 0-32.1 25.9-17 41l32.9 32.9-72 72.9-55.6-55.6c-4.7-4.7-12.2-4.7-16.9 0L96.4 305c-4.7 4.6-4.8 12.2-.2 16.9l28.5 29.4c4.7 4.8 12.4 4.9 17.1.1l82.1-82.1 55.5 55.5c4.7 4.7 12.3 4.7 17 0l109.2-109.2L439 249c15.1 15.1 41 4.4 41-17V120c0-13.3-10.7-24-24-24z"/&gt;&lt;/svg&gt; Keep updated: [tidyverts.org](http://www.tidyverts.org)
 
-Keep updated: 
-&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 496 512"&gt;&lt;path d="M336.5 160C322 70.7 287.8 8 248 8s-74 62.7-88.5 152h177zM152 256c0 22.2 1.2 43.5 3.3 64h185.3c2.1-20.5 3.3-41.8 3.3-64s-1.2-43.5-3.3-64H155.3c-2.1 20.5-3.3 41.8-3.3 64zm324.7-96c-28.6-67.9-86.5-120.4-158-141.6 24.4 33.8 41.2 84.7 50 141.6h108zM177.2 18.4C105.8 39.6 47.8 92.1 19.3 160h108c8.7-56.9 25.5-107.8 49.9-141.6zM487.4 192H372.7c2.1 21 3.3 42.5 3.3 64s-1.2 43-3.3 64h114.6c5.5-20.5 8.6-41.8 8.6-64s-3.1-43.5-8.5-64zM120 256c0-21.5 1.2-43 3.3-64H8.6C3.2 212.5 0 233.8 0 256s3.2 43.5 8.6 64h114.6c-2-21-3.2-42.5-3.2-64zm39.5 96c14.5 89.3 48.7 152 88.5 152s74-62.7 88.5-152h-177zm159.3 141.6c71.4-21.2 129.4-73.7 158-141.6h-108c-8.8 56.9-25.6 107.8-50 141.6zM19.3 352c28.6 67.9 86.5 120.4 158 141.6-24.4-33.8-41.2-84.7-50-141.6h-108z"/&gt;&lt;/svg&gt; [tidyverts.org](http://www.tidyverts.org)
+&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 576 512"&gt;&lt;path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/&gt;&lt;/svg&gt; Review slides: [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
 
-Review slides:
-&lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 576 512"&gt;&lt;path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/&gt;&lt;/svg&gt; [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
+&lt;br&gt;
+
+This work is licensed as &lt;svg style="height:0.8em;top:.04em;position:relative;fill:white;" viewBox="0 0 496 512"&gt;&lt;path d="M254.8 214.8l-33.2 17.3c-9.4-19.6-25.2-19.9-27.5-19.9-22.1 0-33.2 14.6-33.2 43.8 0 23.6 9.2 43.8 33.2 43.8 14.5 0 24.7-7.1 30.6-21.3l30.6 15.5c-6.2 11.5-25.7 39-65.1 39-22.6 0-74-10.3-74-77.1 0-58.7 43-77.1 72.6-77.1 30.8.2 52.7 12.1 66 36zm143.1 0l-32.8 17.3c-9.5-19.8-25.7-19.9-27.9-19.9-22.1 0-33.2 14.6-33.2 43.8 0 23.6 9.2 43.8 33.2 43.8 14.5 0 24.6-7.1 30.5-21.3l31 15.5c-2.1 3.7-21.4 39-65.1 39-22.7 0-74-9.9-74-77.1 0-58.7 43-77.1 72.6-77.1 30.8.2 52.7 12.1 65.7 36zM247.6 8C389.4 8 496 118.1 496 256c0 147.1-118.5 248-248.4 248C113.6 504 0 394.5 0 256 0 123.1 104.7 8 247.6 8zm.8 44.7C130.2 52.7 44.7 150.6 44.7 256c0 109.8 91.2 202.8 203.7 202.8 103.2 0 202.8-81.1 202.8-202.8.1-113.8-90.2-203.3-202.8-203.3z"/&gt;&lt;/svg&gt; BY-NC 4.0.
+]
+
+&lt;script src = "libs/slides.js"&gt;&lt;/script&gt;
     </textarea>
 <script src="libs/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
+"ratio": "4:3",
 "highlightLines": true,
 "countIncrementalSlides": false
 });

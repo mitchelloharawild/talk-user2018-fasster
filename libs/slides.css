@@ -42,6 +42,10 @@ a, a > code {
   margin: 0;
 }
 
+.larger p {
+  font-size: 36px;
+}
+
 .sticker-float img{
 	height: 200px;
 	float: right;

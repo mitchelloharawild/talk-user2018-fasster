@@ -131,8 +131,9 @@ ts_data <- rbind(elec_fc$data[[1]] %>% mutate(frame=1),
 fc_data <- rbind(fortify(elec_fc) %>% mutate(frame=1),
                  fortify(elec_fc) %>% mutate(frame=1))
 
-autoplot(ts_data, Demand) + 
-  transition_states(frame, 8, 8, wrap = FALSE) + 
+p <- autoplot(ts_data, Demand) + 
+  transition_time(frame) + 
   ease_aes('cubic-out') + 
   view_follow(fixed_x = TRUE)
 
+frame_vars()

@@ -155,7 +155,7 @@ background-size: cover
 
 ---
 
-# Electricity demand
+# Electricity demand (Monthly)
 ```{r elecMonthly_gen, eval = FALSE}
 anim_points <- c("month", "day", "30 minutes")
 
@@ -194,7 +194,7 @@ mp4_vid("resources/anim1.mp4")
 
 ---
 
-# Electricity demand
+# Electricity demand (Daily)
 ```{r elecDaily_gen, eval = FALSE}
 gif1_split[[2]] %>% 
   gif2mp4("resources/anim2.mp4")
@@ -205,7 +205,7 @@ mp4_vid("resources/anim2.mp4")
 
 ---
 
-# Electricity demand
+# Electricity demand (Half-hourly)
 ```{r elecPlot_gen, eval = FALSE}
 gif1_split[[3]] %>% 
   gif2mp4("resources/anim3.mp4")
@@ -477,7 +477,6 @@ elec_tr %>%
 ---
 
 # Estimating the model
-<br>
 
 ```{r, elecfit, echo = TRUE, cache = TRUE}
 elec_fit <- elec_tr %>%
@@ -529,7 +528,7 @@ fit_comp %>%
 elec_ts <- tsibbledata::elecdemand %>%
   tsibble::filter(
     index >= ymd("2014-03-01"),
-    index < ymd("2014-04-01"))
+    index < ymd("2014-03-14"))
 ```
 
 ```{r elecfc, cache = TRUE, echo = TRUE}
@@ -556,10 +555,20 @@ elec_ts %>%
 
 # Forecasts
 
-```{r elecfcplot}
+```{r elecfcplot, echo = TRUE}
 elec_fc %>%
-  autoplot()
+  autoplot(level = NULL)
 ```
+
+---
+
+# Forecasts
+
+```{r elecfcplotint, echo = TRUE}
+autoplot(tail(elec_tr, 48*7*2)) + 
+  autolayer(elec_fc)
+```
+
 
 ---
 # Forecasts
@@ -593,10 +602,8 @@ elec_fit %>%
 class: inverse, top
 
 .sticker-float[![fasster](resources/fasster.png)]
-<br>
 
-# A fasster summary
-<br>
+.title[Summary]
 
 Features:
 .pull-left[
@@ -660,17 +667,21 @@ Features:
 class: inverse, top
 
 .sticker-float[![fasster](resources/fasster.png)]
+
+.title[Thanks! `r fa("comments", fill = "white")`]
+
 <br>
 
-# Try for yourself:
+.larger[
+`r fa("github", fill = "white")` Learn more on GitHub: [tidyverts/fasster](https://github.com/tidyverts/fasster)
 
-Learn more about fasster on GitHub:
-`r fa("github", fill = "white")` [tidyverts/fasster](https://github.com/tidyverts/fasster)
+`r fa("chart-line", fill = "white")` Keep updated: [tidyverts.org](http://www.tidyverts.org)
 
-Keep updated: 
-`r fa("globe", fill = "white")` [tidyverts.org](http://www.tidyverts.org)
+`r fa("desktop", fill = "white")` Review slides: [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
 
-Review slides:
-`r fa("desktop", fill = "white")` [mitchelloharawild.com/useR18/](http://mitchelloharawild.com/useR18/)
+<br>
 
 This work is licensed as `r fa("creative-commons", fill="white")` BY-NC 4.0.
+]
+
+<script src = "libs/slides.js"></script>
