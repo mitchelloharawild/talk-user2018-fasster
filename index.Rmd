@@ -594,7 +594,7 @@ elecdemand_missing %>%
   autoplot(Demand) +  
   ylab("Electricity Demand (GW)") 
 ``` 
-```{r}
+```{r, echo = TRUE}
 elec_misfit <- elecdemand_missing %>% 
   fasster(log(Demand) ~ WorkDay %S% (trig(48, 16) + poly(1)) +  
                         Temperature + Temperature^2)
