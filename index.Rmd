@@ -447,7 +447,8 @@ tsibbledata::elecdemand %>%
   ggplot(aes(x=index, y = Demand, colour = `Day Type`)) +
   geom_line() + 
   xlab("Time [30 MINUTES]") + 
-  ylab("Electricity Demand (GW)")
+  ylab("Electricity Demand (GW)") + 
+  scale_colour_brewer(palette = "Dark2")
 ```
 
 ---
@@ -515,7 +516,8 @@ fit_comp %>%
   gather("Term", "Value", -index) %>%
   ggplot(aes(x = hour(index) + minute(index)/60, y = Value, colour = Term, group = interaction(Term, date(index)))) + 
   geom_line() + 
-  xlab("Hour")
+  xlab("Hour") + 
+  scale_colour_brewer(palette = "Dark2")
 ```
 
 
