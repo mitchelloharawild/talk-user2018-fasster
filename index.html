@@ -151,13 +151,13 @@ background-size: cover
 
 
 # Models for multiple seasonality
-<div id="htmlwidget-e2ce1de1c220b130329d" class="timevis html-widget" style="width:100%;height:250px;">
+<div id="htmlwidget-ec46561ddba0dd3d0eb1" class="timevis html-widget" style="width:100%;height:250px;">
 <div class="btn-group zoom-menu">
 <button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
 <button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
 </div>
 </div>
-<script type="application/json" data-for="htmlwidget-e2ce1de1c220b130329d">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"1970","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"TBATS","start":"2010","group":"ss"},{"id":"4","content":"MLR","start":"???","group":"reg"},{"id":"5","content":"GAM","start":"1990","group":"reg"},{"id":"6","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false,"showCurrentTime":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-ec46561ddba0dd3d0eb1">{"x":{"items":[{"id":"1","content":"MSARIMA","start":"1970","group":"ss"},{"id":"2","content":"DSHW","start":"2003","group":"ss"},{"id":"3","content":"TBATS","start":"2010","group":"ss"},{"id":"4","content":"MLR","start":"???","group":"reg"},{"id":"5","content":"GAM","start":"1990","group":"reg"},{"id":"6","content":"Prophet","start":"2017","group":"reg"}],"groups":[{"id":"ss","content":"State Space"},{"id":"reg","content":"Regression"}],"showZoom":false,"zoomFactor":0.5,"fit":true,"options":{"zoomable":false,"showCurrentTime":false},"height":"250px","api":[]},"evals":[],"jsHooks":[]}</script>
 
 &lt;table class="table"&gt;
   &lt;thead&gt;
@@ -443,7 +443,7 @@ elec_fc &lt;- elec_fit %&gt;%
 #&gt; # A fable: 1 forecast [30MINUTE]
 #&gt;   data                  model   forecast     
 #&gt;   &lt;list&gt;                &lt;model&gt; &lt;fc&gt;         
-#&gt; 1 &lt;tsibble [2,832 × 4]&gt; FASSTER ~t(N) [h=624]
+#&gt; 1 &lt;tsibble [2,832 × 4]&gt; FASSTER ~t(N) [h=672]
 ```
 
 --
@@ -455,7 +455,7 @@ elec_ts
 
 
 ```
-#&gt; # A tsibble: 624 x 3 [30MINUTE]
+#&gt; # A tsibble: 672 x 3 [30MINUTE]
 #&gt;   index               WorkDay Temperature
 #&gt;   &lt;dttm&gt;                &lt;dbl&gt;       &lt;dbl&gt;
 #&gt; 1 2014-03-01 00:00:00       0        16.9
@@ -464,7 +464,7 @@ elec_ts
 #&gt; 4 2014-03-01 01:30:00       0        16.4
 #&gt; 5 2014-03-01 02:00:00       0        16.3
 #&gt; 6 2014-03-01 02:30:00       0        16.3
-#&gt; # ... with 618 more rows
+#&gt; # ... with 666 more rows
 ```
 
 ---

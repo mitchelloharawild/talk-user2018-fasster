@@ -529,7 +529,7 @@ fit_comp %>%
 elec_ts <- tsibbledata::elecdemand %>%
   tsibble::filter(
     index >= ymd("2014-03-01"),
-    index < ymd("2014-03-14"))
+    index < ymd("2014-03-15"))
 ```
 
 ```{r elecfc, cache = TRUE, echo = TRUE}
