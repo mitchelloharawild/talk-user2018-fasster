@@ -5,16 +5,16 @@ author: "Mitchell O'Hara-Wild"
 date: '13/07/2018'
 output:
   xaringan::moon_reader:
-    chakra: libs/remark-latest.min.js
-    css: ["libs/slides.css",  "libs/animate.css"]
-    lib_dir: libs
+    chakra: ./libs/remark-latest.min.js
+    css: ["./libs/slides.css",  "./libs/animate.css"]
+    lib_dir: ./libs
     seal: false
     nature:
       highlightStyle: github
       ratio: '4:3'
       highlightLines: true
       countIncrementalSlides: false
-      beforeInit: "libs/slides.js"
+      beforeInit: "./libs/slides.js"
 ---
 class: inverse
 
